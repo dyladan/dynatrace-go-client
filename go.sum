@@ -1,0 +1,4 @@
+golang.org/x/net v0.0.0-20180611182652-db08ff08e862 h1:JZi6BqOZ+iSgmLWe6llhGrNnEnK+YB/MRkStwnEfbqM=
+golang.org/x/net v0.0.0-20180611182652-db08ff08e862/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+gopkg.in/resty.v1 v1.9.1 h1:Lq4EIBZ5e2J4ZWp22W2hVOYc0X1qwDDki/nNVchRbdw=
+gopkg.in/resty.v1 v1.9.1/go.mod h1:vo52Hzryw9PnPHcJfPsBiFW62XhNx5OczbV9y+IMpgc=
