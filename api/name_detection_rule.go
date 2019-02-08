@@ -7,6 +7,10 @@ import "fmt"
 func (c *Client) GetApplicationNameDetectionRule(id string) (NameDetectionRuleDetail, error) {
 	resp := NameDetectionRuleDetail{}
 
+	if id == "" {
+		return resp, fmt.Errorf("Empty string is not a valid id")
+	}
+
 	apiResponse, err := c.Do("GET", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, &resp)
 
 	if err != nil {
@@ -26,6 +30,10 @@ func (c *Client) GetApplicationNameDetectionRule(id string) (NameDetectionRuleDe
 
 // Delete an application name detection rule.
 func (c *Client) DeleteApplicationNameDetectionRule(id string) error {
+	if id == "" {
+		return fmt.Errorf("Empty string is not a valid id")
+	}
+
 	_, err := c.Do("DELETE", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, nil)
 
 	return err
@@ -50,6 +58,10 @@ func (c *Client) CreateApplicationNameDetectionRule(body NameDetectionRuleDetail
 
 // Update an application name detection rule. If the API responds with a non-2xx status code, an error is returned.
 func (c *Client) UpdateApplicationNameDetectionRule(id string, body NameDetectionRuleDetail) error {
+	if id == "" {
+		return fmt.Errorf("Empty string is not a valid id")
+	}
+
 	apiResponse, err := c.Do("PUT", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), body, nil)
 
 	if err != nil {
