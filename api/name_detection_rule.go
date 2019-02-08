@@ -2,36 +2,63 @@ package api
 
 import "fmt"
 
-func (c *Client) QueryApplicationNameDetectionRules() ([]NameDetectionRule, error) {
-	resp := NameDetectionResponse{}
-
-	err := c.Do("GET", "/api/config/v1/applicationDetectionRules", nil, &resp)
-	return resp.Values, err
-}
-
+// Get an application name detection rule. If the rule does not exist, an empty NameDetectionRuleDetail
+// will be returned with an Id of ""
 func (c *Client) GetApplicationNameDetectionRule(id string) (NameDetectionRuleDetail, error) {
 	resp := NameDetectionRuleDetail{}
 
-	err := c.Do("GET", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, &resp)
+	apiResponse, err := c.Do("GET", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, &resp)
 
-	return resp, err
+	if err != nil {
+		return resp, err
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return resp, nil
+	}
+
+	if apiResponse.StatusCode() == 404 {
+		return resp, nil
+	}
+
+	return resp, StatusError(apiResponse.StatusCode())
 }
 
+// Delete an application name detection rule.
 func (c *Client) DeleteApplicationNameDetectionRule(id string) error {
-
-	err := c.Do("DELETE", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, nil)
+	_, err := c.Do("DELETE", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), nil, nil)
 
 	return err
 }
 
+// Create an application name detection rule. If the API responds with a non-2xx status code, an error is returned.
 func (c *Client) CreateApplicationNameDetectionRule(body NameDetectionRuleDetail) (NameDetectionRule, error) {
 	resp := NameDetectionRule{}
 
-	err := c.Do("POST", "/api/config/v1/applicationDetectionRules", body, &resp)
-	return resp, err
+	apiResponse, err := c.Do("POST", "/api/config/v1/applicationDetectionRules", body, &resp)
+
+	if err != nil {
+		return resp, err
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return resp, err
+	}
+
+	return resp, StatusError(apiResponse.StatusCode())
 }
 
+// Update an application name detection rule. If the API responds with a non-2xx status code, an error is returned.
 func (c *Client) UpdateApplicationNameDetectionRule(id string, body NameDetectionRuleDetail) error {
+	apiResponse, err := c.Do("PUT", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), body, nil)
 
-	return c.Do("PUT", fmt.Sprintf("/api/config/v1/applicationDetectionRules/%s", id), body, nil)
+	if err != nil {
+		return err
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return nil
+	}
+
+	return StatusError(apiResponse.StatusCode())
 }
