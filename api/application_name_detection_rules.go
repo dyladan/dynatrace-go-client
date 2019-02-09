@@ -19,6 +19,32 @@ func (c *Client) AllApplicationNameDetectionRules() ([]NameDetectionRule, error)
 	return resp, StatusError(apiResponse.StatusCode())
 }
 
+func (c *Client) UpdateApplicationNameDetectionRuleOrder(ids []string) error {
+	rules := make([]NameDetectionRule, len(ids))
+
+	for i, id := range ids {
+		rules[i] = NameDetectionRule{
+			Id: id,
+		}
+	}
+
+	body := NameDetectionRuleOrderRequest{
+		Values: rules,
+	}
+
+	apiResponse, err := c.Do("PUT", "/api/config/v1/applicationDetectionRules/order", body, nil)
+
+	if err != nil {
+		return err
+	}
+
+	if apiResponse.StatusCode()/100 != 2 {
+		return StatusError(apiResponse.StatusCode())
+	}
+
+	return nil
+}
+
 // Get an application name detection rule. If the rule does not exist, an empty NameDetectionRuleDetail
 // will be returned with an Id of ""
 func (c *Client) GetApplicationNameDetectionRule(id string) (NameDetectionRuleDetail, error) {

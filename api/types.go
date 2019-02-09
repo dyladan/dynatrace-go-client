@@ -1,17 +1,5 @@
 package api
 
-// type NameDetectionRule struct {
-// 	Id                    string                               `json:"id"`
-// 	ApplicationIdentifier string                               `json:"applicationIdentifier"`
-// 	FilterConfig          NameDetectionRuleFilterConfiguration `json:"filterConfig"`
-// }
-
-// type NameDetectionRuleFilterConfiguration struct {
-// 	Pattern                string `json:"pattern"`
-// 	ApplicationMatchType   string `json:"applicationMatchType"`
-// 	ApplicationMatchTarget string `json:"applicationMatchTarget"`
-// }
-
 type NameDetectionResponse struct {
 	Values []NameDetectionRule `json:"values"`
 }
@@ -37,4 +25,8 @@ type NameDetectionRuleFilterConfiguration struct {
 	Pattern                string `json:"pattern"`
 	ApplicationMatchType   string `json:"applicationMatchType"`
 	ApplicationMatchTarget string `json:"applicationMatchTarget"`
+}
+
+type NameDetectionRuleOrderRequest struct {
+	Values []NameDetectionRule `json:"values"`
 }
