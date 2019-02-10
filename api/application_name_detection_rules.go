@@ -4,19 +4,19 @@ import "fmt"
 
 // Get all application naming rules in order
 func (c *Client) AllApplicationNameDetectionRules() ([]NameDetectionRule, error) {
-	resp := []NameDetectionRule{}
+	resp := NameDetectionResponse{}
 
 	apiResponse, err := c.Do("GET", "/api/config/v1/applicationDetectionRules", nil, &resp)
 
 	if err != nil {
-		return resp, err
+		return resp.Values, err
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
-		return resp, err
+		return resp.Values, err
 	}
 
-	return resp, StatusError(apiResponse.StatusCode())
+	return resp.Values, StatusError(apiResponse.StatusCode())
 }
 
 func (c *Client) UpdateApplicationNameDetectionRuleOrder(ids []string) error {
