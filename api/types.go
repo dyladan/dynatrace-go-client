@@ -30,3 +30,14 @@ type NameDetectionRuleFilterConfiguration struct {
 type NameDetectionRuleOrderRequest struct {
 	Values []NameDetectionRule `json:"values"`
 }
+
+// AutoTags
+type AutoTag struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type AutoTagResponse struct {
+	Values []AutoTag `json:"values"`
+}

@@ -6,7 +6,15 @@ import (
 	resty "gopkg.in/resty.v1"
 )
 
+type service struct {
+	client *Client
+}
+
 type Client struct {
+	common service
+
+	AutoTags *AutoTagsService
+
 	RestyClient *resty.Client
 }
 
@@ -35,6 +43,9 @@ func New(config Config) Client {
 	c := Client{
 		RestyClient: r,
 	}
+
+	c.common.client = &c
+	c.AutoTags = (*AutoTagsService)(&c.common)
 
 	return c
 }
