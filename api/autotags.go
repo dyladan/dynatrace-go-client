@@ -1,6 +1,9 @@
 package api
 
-import "gopkg.in/resty.v1"
+import (
+	"fmt"
+	"gopkg.in/resty.v1"
+)
 
 type autoTagsService service
 
@@ -33,6 +36,26 @@ func (s *autoTagsService) Create(autoTag AutoTag) (*AutoTag, *resty.Response, er
 
 	if apiResponse.StatusCode()/100 == 2 {
 		return autoTagResp, apiResponse, err
+	}
+
+	return nil, apiResponse, StatusError(apiResponse.StatusCode())
+
+}
+
+func (s *autoTagsService) Get(ID string, includeProcessGroupReferences bool) (*AutoTag, *resty.Response, error) {
+
+	autoTag := new(AutoTag)
+
+	path := fmt.Sprintf("/api/config/v1/autoTags/%s?includeProcessGroupReferences=%t", ID, includeProcessGroupReferences)
+
+	apiResponse, err := s.client.Do("GET", path, nil, autoTag)
+
+	if err != nil {
+		return nil, apiResponse, err
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return autoTag, apiResponse, err
 	}
 
 	return nil, apiResponse, StatusError(apiResponse.StatusCode())
