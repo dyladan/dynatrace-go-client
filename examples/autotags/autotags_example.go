@@ -30,7 +30,7 @@ func createNewAutoTag() {
 
 	rules := []dynatrace.AutoTagRule{
 		{
-			Type:        dynatrace.CustomDevice,
+			Type:        dynatrace.AutoTagRuleTypeCustomDevice,
 			Enabled:     true,
 			ValueFormat: "Test {CustomDevice:DetectedName}",
 			Conditions:  []dynatrace.AutoTagRuleCondition{condition},

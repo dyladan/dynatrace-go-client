@@ -54,10 +54,10 @@ type AutoTagRule struct {
 type AutoTagRuleType string
 
 const (
-	CustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
-	Host                         = "HOST"
-	ProcessGroup                 = "PROCESS_GROUP"
-	Service                      = "SERVICE"
+	AutoTagRuleTypeCustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
+	AutoTagRuleTypeHost                         = "HOST"
+	AutoTagRuleTypeProcessGroup                 = "PROCESS_GROUP"
+	AutoTagRuleTypeService                      = "SERVICE"
 )
 
 type AutoTagRulePropagationType string
@@ -85,4 +85,26 @@ type AutoTagRuleConditionComparisonInfo struct {
 type AutoTagRuleCondition struct {
 	Key            AutoTagRuleConditionKey            `json:"key"`
 	ComparisonInfo AutoTagRuleConditionComparisonInfo `json:"comparisonInfo"`
+}
+
+// Error Structs
+type ErrorEnvelop struct {
+	Code                 int                   `json:"code"`
+	Message              string                `json:"message"`
+	ConstraintViolations []ConstraintViolation `json:"constraintViolations"`
+}
+
+type ParameterLocation string
+
+const (
+	ParameterLocationPath        ParameterLocation = "PATH"
+	ParameterLocationPayloadBody                   = "PAYLOAD_BODY"
+	ParameterLocationQuery                         = "QUERY"
+)
+
+type ConstraintViolation struct {
+	Path              string            `json:"path"`
+	Message           string            `json:"message"`
+	ParameterLocation ParameterLocation `json:"parameterLocation"`
+	Location          string            `json:"location"`
 }
