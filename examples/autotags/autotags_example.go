@@ -99,9 +99,25 @@ func validadeUpdate() {
 
 }
 
+func validateCreate() {
+
+	fmt.Println("\nValidating create...")
+	autoTags, _, _ := c.AutoTags.GetAll()
+
+	autoTagToValidate, _, _ := c.AutoTags.Get(autoTags[0].ID, false)
+	autoTagToValidate.Rules[0].Conditions[0].ComparisonInfo.Negate = true
+
+	validated, resp, err := c.AutoTags.ValidateCreate(*autoTagToValidate)
+	fmt.Println("Validated", validated)
+	fmt.Println("resp", resp.StatusCode())
+	fmt.Println("err", err)
+
+}
+
 func main() {
 	createNewAutoTag()
 	getAutoTagDetails()
+	validateCreate()
 	validadeUpdate()
 	updateAutoTag()
 	deleteAutoTag()
