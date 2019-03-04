@@ -64,7 +64,7 @@ func updateAutoTag() {
 	fmt.Println("\nUpdating a single AutoTag...")
 
 	autoTags, _, _ := c.AutoTags.GetAll()
-	autoTag, _, _ := c.AutoTags.Get(autoTags[2].ID, false)
+	autoTag, _, _ := c.AutoTags.Get(autoTags[0].ID, false)
 
 	autoTag.Rules[0].Conditions[0].ComparisonInfo.Value = "New Comparison"
 
@@ -74,8 +74,20 @@ func updateAutoTag() {
 
 }
 
+func deleteAutoTag() {
+
+	fmt.Println("\nDeleting an AutoTag...")
+	autoTags, _, _ := c.AutoTags.GetAll()
+
+	resp, err := c.AutoTags.Delete(autoTags[0].ID)
+	fmt.Println(resp.StatusCode())
+	fmt.Println("Error", err)
+
+}
+
 func main() {
 	createNewAutoTag()
 	getAutoTagDetails()
 	updateAutoTag()
+	deleteAutoTag()
 }

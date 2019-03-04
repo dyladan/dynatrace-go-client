@@ -83,3 +83,20 @@ func (s *autoTagsService) Update(ID string, autoTag AutoTag) (*AutoTag, *resty.R
 	return nil, apiResponse, StatusError(apiResponse.StatusCode())
 
 }
+
+func (s *autoTagsService) Delete(ID string) (*resty.Response, error) {
+
+	url := fmt.Sprintf("/api/config/v1/autoTags/%s", ID)
+	apiResponse, err := s.client.Do("DELETE", url, nil, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return apiResponse, nil
+	}
+
+	return apiResponse, StatusError(apiResponse.StatusCode())
+
+}
