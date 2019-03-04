@@ -88,6 +88,11 @@ type AutoTagRuleCondition struct {
 }
 
 // Error Structs
+
+type Error struct {
+	Error ErrorEnvelop `json:"error"`
+}
+
 type ErrorEnvelop struct {
 	Code                 int                   `json:"code"`
 	Message              string                `json:"message"`

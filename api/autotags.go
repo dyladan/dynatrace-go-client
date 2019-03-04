@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"gopkg.in/resty.v1"
 )
@@ -98,5 +99,33 @@ func (s *autoTagsService) Delete(ID string) (*resty.Response, error) {
 	}
 
 	return apiResponse, StatusError(apiResponse.StatusCode())
+
+}
+
+func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*Error, *resty.Response, error) {
+
+	validatorResp := new(Error)
+	url := fmt.Sprintf("/api/config/v1/autoTags/%s/validator", ID)
+
+	apiResponse, err := s.client.Do("POST", url, autoTag, nil)
+
+	if apiResponse.StatusCode() == 400 {
+
+		unmarshalError := json.Unmarshal(apiResponse.Body(), validatorResp)
+		if unmarshalError != nil {
+			return nil, apiResponse, unmarshalError
+		}
+		return validatorResp, apiResponse, nil
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return nil, apiResponse, nil
+	}
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return nil, apiResponse, StatusError(apiResponse.StatusCode())
 
 }
