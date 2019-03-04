@@ -12,6 +12,8 @@ var c = dynatrace.New(dynatrace.Config{
 
 func createNewAutoTag() {
 
+	fmt.Println("Creating a new AutoTag...")
+
 	condition := dynatrace.AutoTagRuleCondition{
 		Key: dynatrace.AutoTagRuleConditionKey{
 			Attribute: "CUSTOM_DEVICE_NAME",
@@ -41,25 +43,39 @@ func createNewAutoTag() {
 		Rules:       rules,
 	}
 
-	autoTag, _, err := c.AutoTags.Create(newAutoTag)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("New AutoTag: %+v\n", autoTag)
+	autoTag, resp, _ := c.AutoTags.Create(newAutoTag)
+	fmt.Println("API Response", resp)
+	fmt.Printf("Created new AutoTag: %+v\n", autoTag)
 }
 
 func getAutoTagDetails() {
+	fmt.Println("\nGetting the details of every AutoTag...")
 
 	autoTags, _, _ := c.AutoTags.GetAll()
 
 	for i, autoTag := range autoTags {
 		autoTagDetail, _, _ := c.AutoTags.Get(autoTag.ID, false)
-		fmt.Printf("%d: %+v\n", i, autoTagDetail)
+		fmt.Printf("AutoTag Detail: %d: %+v\n", i, autoTagDetail)
 	}
+}
+
+func updateAutoTag() {
+
+	fmt.Println("\nUpdating a single AutoTag...")
+
+	autoTags, _, _ := c.AutoTags.GetAll()
+	autoTag, _, _ := c.AutoTags.Get(autoTags[2].ID, false)
+
+	autoTag.Rules[0].Conditions[0].ComparisonInfo.Value = "New Comparison"
+
+	_, resp, err := c.AutoTags.Update(autoTag.ID, *autoTag)
+	fmt.Printf("%+v\n", resp.StatusCode())
+	fmt.Println("Error", err)
+
 }
 
 func main() {
 	createNewAutoTag()
 	getAutoTagDetails()
+	updateAutoTag()
 }

@@ -18,7 +18,7 @@ func (s *autoTagsService) GetAll() ([]AutoTag, *resty.Response, error) {
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
-		return autoTags.Values, apiResponse, err
+		return autoTags.Values, apiResponse, nil
 	}
 
 	return nil, apiResponse, StatusError(apiResponse.StatusCode())
@@ -35,7 +35,7 @@ func (s *autoTagsService) Create(autoTag AutoTag) (*AutoTag, *resty.Response, er
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
-		return autoTagResp, apiResponse, err
+		return autoTagResp, apiResponse, nil
 	}
 
 	return nil, apiResponse, StatusError(apiResponse.StatusCode())
@@ -55,7 +55,29 @@ func (s *autoTagsService) Get(ID string, includeProcessGroupReferences bool) (*A
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
-		return autoTag, apiResponse, err
+		return autoTag, apiResponse, nil
+	}
+
+	return nil, apiResponse, StatusError(apiResponse.StatusCode())
+
+}
+
+func (s *autoTagsService) Update(ID string, autoTag AutoTag) (*AutoTag, *resty.Response, error) {
+	autoTagResp := new(AutoTag)
+
+	url := fmt.Sprintf("/api/config/v1/autoTags/%s", ID)
+	apiResponse, err := s.client.Do("PUT", url, autoTag, autoTagResp)
+
+	if err != nil {
+		return nil, apiResponse, err
+	}
+
+	if apiResponse.StatusCode() == 204 {
+		return nil, apiResponse, nil
+	}
+
+	if apiResponse.StatusCode()/100 == 2 {
+		return autoTagResp, apiResponse, nil
 	}
 
 	return nil, apiResponse, StatusError(apiResponse.StatusCode())
