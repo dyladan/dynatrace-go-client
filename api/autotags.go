@@ -8,6 +8,7 @@ import (
 
 type autoTagsService service
 
+// GetAll lists all configured auto tags
 func (s *autoTagsService) GetAll() ([]AutoTag, *resty.Response, error) {
 
 	autoTags := new(AutoTagResponse)
@@ -26,6 +27,7 @@ func (s *autoTagsService) GetAll() ([]AutoTag, *resty.Response, error) {
 
 }
 
+// Create creates a new auto tag
 func (s *autoTagsService) Create(autoTag AutoTag) (*AutoTag, *resty.Response, error) {
 	autoTagResp := new(AutoTag)
 
@@ -43,6 +45,7 @@ func (s *autoTagsService) Create(autoTag AutoTag) (*AutoTag, *resty.Response, er
 
 }
 
+// Get gets the properties of the specified auto tag
 func (s *autoTagsService) Get(ID string, includeProcessGroupReferences bool) (*AutoTag, *resty.Response, error) {
 
 	autoTag := new(AutoTag)
@@ -63,6 +66,7 @@ func (s *autoTagsService) Get(ID string, includeProcessGroupReferences bool) (*A
 
 }
 
+// Update updates an existing auto tag or creates a new one
 func (s *autoTagsService) Update(ID string, autoTag AutoTag) (*AutoTag, *resty.Response, error) {
 	autoTagResp := new(AutoTag)
 
@@ -85,6 +89,7 @@ func (s *autoTagsService) Update(ID string, autoTag AutoTag) (*AutoTag, *resty.R
 
 }
 
+// Delete deletes the specified auto tag
 func (s *autoTagsService) Delete(ID string) (*resty.Response, error) {
 
 	url := fmt.Sprintf("/api/config/v1/autoTags/%s", ID)
@@ -102,6 +107,7 @@ func (s *autoTagsService) Delete(ID string) (*resty.Response, error) {
 
 }
 
+// ValidateUpdate validates update of existing auto tags for the `PUT /autoTags/{id}` request
 func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*Error, *resty.Response, error) {
 
 	validatorResp := new(Error)
@@ -130,6 +136,7 @@ func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*Error, *r
 
 }
 
+// ValidateCreate validates new auto tags for the `POST /autoTags` request
 func (s *autoTagsService) ValidateCreate(autoTag AutoTag) (*Error, *resty.Response, error) {
 
 	validatorResp := new(Error)
