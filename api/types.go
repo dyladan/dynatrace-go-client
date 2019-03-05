@@ -86,3 +86,19 @@ type AutoTagRuleCondition struct {
 	Key            AutoTagRuleConditionKey            `json:"key"`
 	ComparisonInfo AutoTagRuleConditionComparisonInfo `json:"comparisonInfo"`
 }
+
+type ErrorResponse struct {
+	Detail *ErrorDetail `json:"error,omitempty"`
+}
+
+type ErrorDetail struct {
+	Code    int64  `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
+}
+
+func (e *ErrorResponse) Error() string {
+	if e != nil && e.Detail != nil {
+		return e.Detail.Message
+	}
+	return "Unknown error"
+}
