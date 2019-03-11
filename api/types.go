@@ -54,10 +54,10 @@ type AutoTagRule struct {
 type AutoTagRuleType string
 
 const (
-	CustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
-	Host                         = "HOST"
-	ProcessGroup                 = "PROCESS_GROUP"
-	Service                      = "SERVICE"
+	AutoTagRuleTypeCustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
+	AutoTagRuleTypeHost                         = "HOST"
+	AutoTagRuleTypeProcessGroup                 = "PROCESS_GROUP"
+	AutoTagRuleTypeService                      = "SERVICE"
 )
 
 type AutoTagRulePropagationType string
@@ -87,13 +87,29 @@ type AutoTagRuleCondition struct {
 	ComparisonInfo AutoTagRuleConditionComparisonInfo `json:"comparisonInfo"`
 }
 
+type ConstraintViolation struct {
+	Path              string                               `json:"path,omitempty"`
+	Message           string                               `json:"message,omitempty"`
+	ParameterLocation ConstraintViolationParameterLocation `json:"parameterLocation,omitempty"`
+	Location          string                               `json:"location,omitempty"`
+}
+
+type ConstraintViolationParameterLocation string
+
+const (
+	ConstraintViolationParameterLocationPath        ConstraintViolationParameterLocation = "PATH"
+	ConstraintViolationParameterLocationPayloadBody ConstraintViolationParameterLocation = "PAYLOAD_BODY"
+	ConstraintViolationParameterLocationQuery       ConstraintViolationParameterLocation = "QUERY"
+)
+
 type ErrorResponse struct {
 	Detail *ErrorDetail `json:"error,omitempty"`
 }
 
 type ErrorDetail struct {
-	Code    int64  `json:"code,omitempty"`
-	Message string `json:"message,omitempty"`
+	Code                 int64                 `json:"code,omitempty"`
+	Message              string                `json:"message,omitempty"`
+	ConstraintViolations []ConstraintViolation `json:"constraintViolations"`
 }
 
 func (e *ErrorResponse) Error() string {

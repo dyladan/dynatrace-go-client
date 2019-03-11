@@ -6,8 +6,8 @@ import (
 )
 
 var c = dynatrace.New(dynatrace.Config{
-	APIKey:  "MyAPIKey",
-	BaseURL: "https://my.tenant.url/",
+	APIKey:  "WqtGxyF1Qzah2UjuW8q02",
+	BaseURL: "https://eaa50379.sprint.dynatracelabs.com",
 })
 
 func createNewAutoTag() {
@@ -30,7 +30,7 @@ func createNewAutoTag() {
 
 	rules := []dynatrace.AutoTagRule{
 		{
-			Type:        dynatrace.CustomDevice,
+			Type:        dynatrace.AutoTagRuleTypeCustomDevice,
 			Enabled:     true,
 			ValueFormat: "Test {CustomDevice:DetectedName}",
 			Conditions:  []dynatrace.AutoTagRuleCondition{condition},
@@ -64,7 +64,7 @@ func updateAutoTag() {
 	fmt.Println("\nUpdating a single AutoTag...")
 
 	autoTags, _, _ := c.AutoTags.GetAll()
-	autoTag, _, _ := c.AutoTags.Get(autoTags[2].ID, false)
+	autoTag, _, _ := c.AutoTags.Get(autoTags[0].ID, false)
 
 	autoTag.Rules[0].Conditions[0].ComparisonInfo.Value = "New Comparison"
 
@@ -74,8 +74,52 @@ func updateAutoTag() {
 
 }
 
+func deleteAutoTag() {
+
+	fmt.Println("\nDeleting an AutoTag...")
+	autoTags, _, _ := c.AutoTags.GetAll()
+
+	resp, err := c.AutoTags.Delete(autoTags[0].ID)
+	fmt.Println(resp.StatusCode())
+	fmt.Println("Error", err)
+
+}
+
+func validadeUpdate() {
+	fmt.Println("\nValidating update...")
+	autoTags, _, _ := c.AutoTags.GetAll()
+
+	autoTagToValidate, _, _ := c.AutoTags.Get(autoTags[0].ID, false)
+	autoTagToValidate.Rules[0].Conditions[0].ComparisonInfo.Negate = true
+
+	validated, resp, err := c.AutoTags.ValidateUpdate(autoTagToValidate.ID, *autoTagToValidate)
+	fmt.Println("Validated", validated.ConstraintViolations)
+	fmt.Println("resp", resp.StatusCode())
+	fmt.Println("err", err)
+
+}
+
+func validateCreate() {
+
+	fmt.Println("\nValidating create...")
+	autoTags, _, _ := c.AutoTags.GetAll()
+
+	autoTagToValidate, _, _ := c.AutoTags.Get(autoTags[0].ID, false)
+	autoTagToValidate.Rules[0].Conditions[0].ComparisonInfo.Negate = true
+
+	validated, resp, err := c.AutoTags.ValidateCreate(*autoTagToValidate)
+	fmt.Println("Validated", validated)
+	fmt.Println("resp", resp.StatusCode())
+	fmt.Println("err", err)
+
+}
+
 func main() {
 	createNewAutoTag()
 	getAutoTagDetails()
+	validateCreate()
+	validadeUpdate()
 	updateAutoTag()
+	deleteAutoTag()
+
 }
