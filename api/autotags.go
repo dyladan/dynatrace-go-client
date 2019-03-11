@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"gopkg.in/resty.v1"
 )
@@ -108,20 +107,14 @@ func (s *autoTagsService) Delete(ID string) (*resty.Response, error) {
 }
 
 // ValidateUpdate validates update of existing auto tags for the `PUT /autoTags/{id}` request
-func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*Error, *resty.Response, error) {
+func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*ErrorDetail, *resty.Response, error) {
 
-	validatorResp := new(Error)
 	url := fmt.Sprintf("/api/config/v1/autoTags/%s/validator", ID)
 
 	apiResponse, err := s.client.Do("POST", url, autoTag, nil)
 
 	if apiResponse.StatusCode() == 400 {
-
-		unmarshalError := json.Unmarshal(apiResponse.Body(), validatorResp)
-		if unmarshalError != nil {
-			return nil, apiResponse, unmarshalError
-		}
-		return validatorResp, apiResponse, nil
+		return apiResponse.Error().(*ErrorResponse).Detail, apiResponse, err
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
@@ -137,19 +130,12 @@ func (s *autoTagsService) ValidateUpdate(ID string, autoTag AutoTag) (*Error, *r
 }
 
 // ValidateCreate validates new auto tags for the `POST /autoTags` request
-func (s *autoTagsService) ValidateCreate(autoTag AutoTag) (*Error, *resty.Response, error) {
-
-	validatorResp := new(Error)
+func (s *autoTagsService) ValidateCreate(autoTag AutoTag) (*ErrorDetail, *resty.Response, error) {
 
 	apiResponse, err := s.client.Do("POST", "/api/config/v1/autoTags/", autoTag, nil)
 
 	if apiResponse.StatusCode() == 400 {
-
-		unmarshalError := json.Unmarshal(apiResponse.Body(), validatorResp)
-		if unmarshalError != nil {
-			return nil, apiResponse, unmarshalError
-		}
-		return validatorResp, apiResponse, nil
+		return apiResponse.Error().(*ErrorResponse).Detail, apiResponse, err
 	}
 
 	if apiResponse.StatusCode()/100 == 2 {
