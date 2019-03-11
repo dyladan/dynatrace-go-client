@@ -6,8 +6,8 @@ import (
 )
 
 var c = dynatrace.New(dynatrace.Config{
-	APIKey:  "MyAPIKey",
-	BaseURL: "https://my.tenant.url/",
+	APIKey:  "WqtGxyF1Qzah2UjuW8q02",
+	BaseURL: "https://eaa50379.sprint.dynatracelabs.com",
 })
 
 func createNewAutoTag() {
@@ -93,7 +93,7 @@ func validadeUpdate() {
 	autoTagToValidate.Rules[0].Conditions[0].ComparisonInfo.Negate = true
 
 	validated, resp, err := c.AutoTags.ValidateUpdate(autoTagToValidate.ID, *autoTagToValidate)
-	fmt.Println("Validated", validated)
+	fmt.Println("Validated", validated.ConstraintViolations)
 	fmt.Println("resp", resp.StatusCode())
 	fmt.Println("err", err)
 
