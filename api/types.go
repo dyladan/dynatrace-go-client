@@ -54,10 +54,10 @@ type AutoTagRule struct {
 type AutoTagRuleType string
 
 const (
-	CustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
-	Host                         = "HOST"
-	ProcessGroup                 = "PROCESS_GROUP"
-	Service                      = "SERVICE"
+	AutoTagRuleTypeCustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
+	AutoTagRuleTypeHost                         = "HOST"
+	AutoTagRuleTypeProcessGroup                 = "PROCESS_GROUP"
+	AutoTagRuleTypeService                      = "SERVICE"
 )
 
 type AutoTagRulePropagationType string
