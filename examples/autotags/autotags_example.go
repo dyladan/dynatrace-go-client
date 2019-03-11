@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	dynatrace "github.com/dyladan/dynatrace-go-client/api"
+	"os"
 )
 
 var c = dynatrace.New(dynatrace.Config{
-	APIKey:  "WqtGxyF1Qzah2UjuW8q02",
-	BaseURL: "https://eaa50379.sprint.dynatracelabs.com",
+	APIKey:  os.Getenv("DT_API_KEY"),
+	BaseURL: os.Getenv("DT_BASE_URL"),
 })
 
 func createNewAutoTag() {
