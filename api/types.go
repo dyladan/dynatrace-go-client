@@ -54,10 +54,10 @@ type AutoTagRule struct {
 type AutoTagRuleType string
 
 const (
-	AutoTagRuleTypeCustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
-	AutoTagRuleTypeHost                         = "HOST"
-	AutoTagRuleTypeProcessGroup                 = "PROCESS_GROUP"
-	AutoTagRuleTypeService                      = "SERVICE"
+	CustomDevice AutoTagRuleType = "CUSTOM_DEVICE"
+	Host                         = "HOST"
+	ProcessGroup                 = "PROCESS_GROUP"
+	Service                      = "SERVICE"
 )
 
 type AutoTagRulePropagationType string
@@ -87,29 +87,18 @@ type AutoTagRuleCondition struct {
 	ComparisonInfo AutoTagRuleConditionComparisonInfo `json:"comparisonInfo"`
 }
 
-// Error Structs
-
-type Error struct {
-	Error ErrorEnvelop `json:"error"`
+type ErrorResponse struct {
+	Detail *ErrorDetail `json:"error,omitempty"`
 }
 
-type ErrorEnvelop struct {
-	Code                 int                   `json:"code"`
-	Message              string                `json:"message"`
-	ConstraintViolations []ConstraintViolation `json:"constraintViolations"`
+type ErrorDetail struct {
+	Code    int64  `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
 }
 
-type ParameterLocation string
-
-const (
-	ParameterLocationPath        ParameterLocation = "PATH"
-	ParameterLocationPayloadBody                   = "PAYLOAD_BODY"
-	ParameterLocationQuery                         = "QUERY"
-)
-
-type ConstraintViolation struct {
-	Path              string            `json:"path"`
-	Message           string            `json:"message"`
-	ParameterLocation ParameterLocation `json:"parameterLocation"`
-	Location          string            `json:"location"`
+func (e *ErrorResponse) Error() string {
+	if e != nil && e.Detail != nil {
+		return e.Detail.Message
+	}
+	return "Unknown error"
 }

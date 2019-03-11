@@ -51,7 +51,9 @@ func New(config Config) Client {
 }
 
 func (c *Client) Do(method string, path string, body interface{}, response interface{}) (*resty.Response, error) {
-	r := c.RestyClient.R().SetHeader("Content-Type", "application/json")
+	r := c.RestyClient.R().
+		SetError(&ErrorResponse{}).
+		SetHeader("Content-Type", "application/json")
 
 	if body != nil {
 		r = r.SetBody(body)
