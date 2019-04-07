@@ -13,7 +13,8 @@ type service struct {
 type Client struct {
 	common service
 
-	AutoTags *autoTagsService
+	AutoTags   *autoTagsService
+	Dashboards *dashboardService
 
 	RestyClient *resty.Client
 }
@@ -46,6 +47,7 @@ func New(config Config) Client {
 
 	c.common.client = &c
 	c.AutoTags = (*autoTagsService)(&c.common)
+	c.Dashboards = (*dashboardService)(&c.common)
 
 	return c
 }

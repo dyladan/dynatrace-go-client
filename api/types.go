@@ -102,6 +102,17 @@ const (
 	ConstraintViolationParameterLocationQuery       ConstraintViolationParameterLocation = "QUERY"
 )
 
+// Dashboard Types
+type DashboardResponse struct {
+	Dashboards []Dashboard `json:"dashboards"`
+}
+
+type Dashboard struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Owner string `json:"owner"`
+}
+
 type ErrorResponse struct {
 	Detail *ErrorDetail `json:"error,omitempty"`
 }
