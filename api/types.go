@@ -104,15 +104,118 @@ const (
 
 // Dashboard Types
 type DashboardResponse struct {
-	Dashboards []Dashboard `json:"dashboards"`
+	Dashboards []DashboardStub `json:"dashboards"`
 }
 
 type Dashboard struct {
-	ID    string `json:"id"`
-	Name  string `json:"name"`
-	Owner string `json:"owner"`
+	ID                string                `json:"id,omitempty"`
+	Metadata          ConfigurationMetadata `json:"metadata,omitempty"`
+	DashboardMetadata DashboardMetadata     `json:"dashboardMetadata"`
+	Tiles             []Tile                `json:"tiles"`
 }
 
+type DashboardStub struct {
+	ID    string `json:"id"`
+	Name  string `json:"name,omitempty"`
+	Owner string `json:"owner,omitempty"`
+}
+
+type ConfigurationMetadata struct {
+	ConfigurationVersions []int  `json:"configurationVersions"`
+	ClusterVersion        string `json:"clusterVersion"`
+}
+
+type DashboardMetadata struct {
+	Name            string          `json:"name"`
+	Shared          bool            `json:"shared,omitempty"`
+	Owner           string          `json:"owner,omitempty"`
+	SharingDetails  SharingInfo     `json:"sharingDetails"`
+	DashboardFilter DashboardFilter `json:"dashboardFilter"`
+}
+
+type SharingInfo struct {
+	LinkShared bool `json:"linkShared,omitempty"`
+	Published  bool `json:"published,omitempty"`
+}
+
+type DashboardFilter struct {
+	Timeframe      string                    `json:"timeframe,omitempty"`
+	ManagementZone EntityShortRepresentation `json:"anagementZone,omitempty"`
+}
+
+type EntityShortRepresentation struct {
+	ID          string `json:"id"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+type Tile struct {
+	Name       string     `json:"name"`
+	TileType   TileType   `json:"tileType"`
+	Configured bool       `json:"configured,omitempty"`
+	Bounds     TileBounds `json:"bounds"`
+	TileFilter TileFilter `json:"tileFilter"`
+}
+
+type TileType string
+
+const (
+	TileTypeApplication             TileType = "APPLICATION"
+	TileTypeApplications            TileType = "APPLICATIONS"
+	TileTypeApplicationsMostActive  TileType = "APPLICATIONS_MOST_ACTIVE"
+	TileTypeApplicationMethod       TileType = "APPLICATION_METHOD"
+	TileTypeApplicationWorldMap     TileType = "APPLICATION_WORLDMAP"
+	TileTypeAWS                     TileType = "AWS"
+	TileTypeBounceRate              TileType = "BOUNCE_RATE"
+	TileTypeCustomApplication       TileType = "CUSTOM_APPLICATION"
+	TileTypeCustomCharting          TileType = "CUSTOM_CHARTING"
+	TileTypeDatabase                TileType = "DATABASE"
+	TileTypeDAtabasesOverview       TileType = "DATABASES_OVERVIEW"
+	TileTypeDCRUMServices           TileType = "DCRUM_SERVICES"
+	TileTypeDocker                  TileType = "DOCKER"
+	TileTypeDTAQL                   TileType = "DTAQL"
+	TileTypeHeader                  TileType = "HEADER"
+	TileTypeHost                    TileType = "HOST"
+	TileTypeHosts                   TileType = "HOSTS"
+	TileTypeLogAnalytics            TileType = "LOG_ANALYTICS"
+	TileTypeMarkdown                TileType = "MARKDOWN"
+	TileTypeMobileApplication       TileType = "MOBILE_APPLICATION"
+	TileTypeNetwork                 TileType = "NETWORK"
+	TileTypeNetworkMedium           TileType = "NETWORK_MEDIUM"
+	TileTypeOpenProblems            TileType = "OPEN_PROBLEMS"
+	TileTypeProcessGroupsOne        TileType = "PROCESS_GROUPS_ONE"
+	TileTypePureModel               TileType = "PURE_MODEL"
+	TileTypeResources               TileType = "RESOURCES"
+	TileTypeServices                TileType = "SERVICES"
+	TileTypeServiceVersatile        TileType = "SERVICE_VERSATILE"
+	TileTypeSessionMetrics          TileType = "SESSION_METRICS"
+	TileTypeSyntheticHTTPMonitor    TileType = "SYNTHETIC_HTTP_MONITOR"
+	TileTypeSyntheticSingleExitTest TileType = "SYNTHETIC_SINGLE_EXT_TEST"
+	TileTypeSyntheticSingleWebcheck TileType = "SYNTHETIC_SINGLE_WEBCHECK"
+	TileTypeSyntheticTests          TileType = "SYNTHETIC_TESTS"
+	TileTypeTechnologyLandscape     TileType = "TECHNOLOGY_LANDSCAPE"
+	TileTypeThirdPartyMostActive    TileType = "THIRD_PARTY_MOST_ACTIVE"
+	TileTypeUEMActiveSessions       TileType = "UEM_ACTIVE_SESSIONS"
+	TileTypeUEMConversionsOverall   TileType = "UEM_CONVERSIONS_OVERALL"
+	TileTypeUEMConversionsPerGoal   TileType = "UEM_CONVERSIONS_PER_GOAL"
+	TileTypeUEMJSErrorsOverall      TileType = "UEM_JSERRORS_OVERALL"
+	TileTypeUEMKeyUserActions       TileType = "UEM_KEY_USER_ACTIONS"
+	TileTypeUsers                   TileType = "USERS"
+	TileTypeVirtualization          TileType = "VIRTUALIZATION"
+)
+
+type TileBounds struct {
+	Top    int `json:"top,omitempty"`
+	Left   int `json:"left,omitempty"`
+	Width  int `json:"width,omitempty"`
+	Height int `json:"height,omitempty"`
+}
+
+type TileFilter struct {
+	ManagementZone EntityShortRepresentation `json:"managementZone"`
+}
+
+// Error Types
 type ErrorResponse struct {
 	Detail *ErrorDetail `json:"error,omitempty"`
 }

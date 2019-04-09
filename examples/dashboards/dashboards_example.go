@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	dynatrace "github.com/dyladan/dynatrace-go-client/api"
 	"log"
@@ -12,6 +13,11 @@ var c = dynatrace.New(dynatrace.Config{
 	BaseURL: os.Getenv("DT_BASE_URL"),
 })
 
+func prettyPrint(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "\t")
+	return string(s)
+}
+
 func getAllDashboards() {
 	dashboards, rawResp, err := c.Dashboards.GetAll()
 	if err != nil {
@@ -19,7 +25,8 @@ func getAllDashboards() {
 	}
 	fmt.Printf("Response: %d\n", rawResp.StatusCode())
 	for _, dashboard := range dashboards {
-		fmt.Printf("%+v\n", dashboard)
+		detailed, _, _ := c.Dashboards.Get(dashboard.ID)
+		fmt.Println(prettyPrint(detailed))
 
 	}
 
