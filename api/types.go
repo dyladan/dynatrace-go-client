@@ -5,39 +5,61 @@ type RuleType string
 
 const (
 	AppmonServer                 RuleType = "APPMON_SERVER"
-	AppmonSystemProfile          RuleType = "APPMON_SYSTEM_PROFILE"
-	AWSAccount                   RuleType = "AWS_ACCOUNT"
-	AWSAutoScalingGroup          RuleType = "AWS_AUTO_SCALING_GROUP"
-	AWSClassicLoadBalancer       RuleType = "AWS_CLASSIC_LOAD_BALANCER"
-	AWSRelationalDatabaseService RuleType = "AWS_RELATIONAL_DATABASE_SERVICE"
-	BrowserMonitor               RuleType = "BROWSER_MONITOR"
-	CloudFoundryFoundation       RuleType = "CLOUD_FOUNDRY_FOUNDATION"
-	CustomApplication            RuleType = "CUSTOM_APPLICATION"
-	CustomDevice                 RuleType = "CUSTOM_DEVICE"
-	CustomDeviceGroup            RuleType = "CUSTOM_DEVICE_GROUP"
-	DataCenterService            RuleType = "DATA_CENTER_SERVICE"
-	EnterpriseApplication        RuleType = "ENTERPRISE_APPLICATION"
-	ESXiHost                     RuleType = "ESXI_HOST"
-	ExternalMonitor              RuleType = "EXTERNAL_MONITOR"
-	Host                         RuleType = "HOST"
-	HTTPMonitor                  RuleType = "HTTP_MONITOR"
-	KubernetesCluster            RuleType = "KUBERNETES_CLUSTER"
-	MobileApplication            RuleType = "MOBILE_APPLICATION"
-	OpenstackAccount             RuleType = "OPENSTACK_ACCOUNT"
-	ProcessGroup                 RuleType = "PROCESS_GROUP"
-	Service                      RuleType = "SERVICE"
-	WebApplication               RuleType = "WEB_APPLICATION"
+	AppmonSystemProfile                   = "APPMON_SYSTEM_PROFILE"
+	AWSAccount                            = "AWS_ACCOUNT"
+	AWSAutoScalingGroup                   = "AWS_AUTO_SCALING_GROUP"
+	AWSClassicLoadBalancer                = "AWS_CLASSIC_LOAD_BALANCER"
+	AWSRelationalDatabaseService          = "AWS_RELATIONAL_DATABASE_SERVICE"
+	BrowserMonitor                        = "BROWSER_MONITOR"
+	CloudFoundryFoundation                = "CLOUD_FOUNDRY_FOUNDATION"
+	CustomApplication                     = "CUSTOM_APPLICATION"
+	CustomDevice                          = "CUSTOM_DEVICE"
+	CustomDeviceGroup                     = "CUSTOM_DEVICE_GROUP"
+	DataCenterService                     = "DATA_CENTER_SERVICE"
+	EnterpriseApplication                 = "ENTERPRISE_APPLICATION"
+	ESXiHost                              = "ESXI_HOST"
+	ExternalMonitor                       = "EXTERNAL_MONITOR"
+	Host                                  = "HOST"
+	HTTPMonitor                           = "HTTP_MONITOR"
+	KubernetesCluster                     = "KUBERNETES_CLUSTER"
+	MobileApplication                     = "MOBILE_APPLICATION"
+	OpenstackAccount                      = "OPENSTACK_ACCOUNT"
+	ProcessGroup                          = "PROCESS_GROUP"
+	Service                               = "SERVICE"
+	WebApplication                        = "WEB_APPLICATION"
+)
+
+type Operator string
+
+const (
+	Equals Operator = "EQUALS"
+	Exists          = "EXISTS"
+)
+
+type Comparison string
+
+const (
+	BeginsWith         Comparison = "BEGINS_WITH"
+	Contains                      = "CONTAINS"
+	EndsWith                      = "ENDS_WITH"
+	EqualsCompairson              = "EQUALS"
+	ExistsComparison              = "EXISTS"
+	RegexMatches                  = "REGEX_MATCHES"
+	GreaterThan                   = "GREATER_THAN"
+	GreaterThanOrEqual            = "GREATER_THAN_OR_EQUAL"
+	LowerThan                     = "LOWER_THAN"
+	LowerThanOrEqual              = "LOWER_THAN_OR_EQUAL"
 )
 
 type PropagationType string
 
 const (
 	ServiceToProcessGroupLike       PropagationType = "SERVICE_TO_PROCESS_GROUP_LIKE"
-	ServiceToHostLike               PropagationType = "SERVICE_TO_HOST_LIKE"
-	ProcessGroupToHost              PropagationType = "PROCESS_GROUP_TO_HOST"
-	ProcessGroupToService           PropagationType = "PROCESS_GROUP_TO_SERVICE"
-	HostToProcessGroupInstance      PropagationType = "HOST_TO_PROCESS_GROUP_INSTANCE"
-	CustomDeviceGroupToCustomDevice PropagationType = "CUSTOM_DEVICE_GROUP_TO_CUSTOM_DEVICE"
+	ServiceToHostLike                               = "SERVICE_TO_HOST_LIKE"
+	ProcessGroupToHost                              = "PROCESS_GROUP_TO_HOST"
+	ProcessGroupToService                           = "PROCESS_GROUP_TO_SERVICE"
+	HostToProcessGroupInstance                      = "HOST_TO_PROCESS_GROUP_INSTANCE"
+	CustomDeviceGroupToCustomDevice                 = "CUSTOM_DEVICE_GROUP_TO_CUSTOM_DEVICE"
 )
 
 type Attribute string
@@ -226,6 +248,156 @@ const (
 	WebApplicationType                        Attribute = "WEB_APPLICATION_TYPE"
 )
 
+const (
+	AkkaActorClassName        Attribute = "AKKA_ACTOR_CLASS_NAME"
+	AkkaActorMessageType                = "AKKA_ACTOR_MESSAGE_TYPE"
+	AkkaActorPath                       = "AKKA_ACTOR_PATH"
+	CICSProgramName                     = "CICS_PROGRAM_NAME"
+	CICSSystemId                        = "CICS_SYSTEM_ID"
+	CICSTaskId                          = "CICS_TASK_ID"
+	CICSTransactionId                   = "CICS_TRANSACTION_ID"
+	CTGProgram                          = "CTG_PROGRAM"
+	CTGTransactionId                    = "CTG_TRANSACTION_ID"
+	CustomServiceClass                  = "CUSTOMSERVICE_CLASS"
+	CustomServiceMethod                 = "CUSTOMSERVICE_METHOD"
+	HTTPRequestMethod                   = "HTTP_REQUEST_METHOD"
+	HTTPStatus                          = "HTTP_STATUS"
+	IIBApplicationName                  = "IIB_APPLICATION_NAME"
+	IIBInputType                        = "IIB_INPUT_TYPE"
+	IIBLibraryName                      = "IIB_LIBRARY_NAME"
+	IIBMessageFlowName                  = "IIB_MESSAGE_FLOW_NAME"
+	IMSProgramName                      = "IMS_PROGRAM_NAME"
+	IMSTransactionId                    = "IMS_TRANSACTION_ID"
+	MessagingDestinationType            = "MESSAGING_DESTINATION_TYPE"
+	MessagingIsTemporaryQueue           = "MESSAGING_IS_TEMPORARY_QUEUE"
+	MessagingQueueName                  = "MESSAGING_QUEUE_NAME"
+	MessagingQueueVendor                = "MESSAGING_QUEUE_VENDOR"
+	RemoteEndpoint                      = "REMOTE_ENDPOINT"
+	RemoteMethod                        = "REMOTE_METHOD"
+	RequestName                         = "REQUEST_NAME"
+	RMIClass                            = "RMI_CLASS"
+	RMIMethod                           = "RMI_METHOD"
+	ServiceRequestAttribute             = "SERVICE_REQUEST_ATTRIBUTE"
+	WebrequestQuery                     = "WEBREQUEST_QUERY"
+	WebrequestURL                       = "WEBREQUEST_URL"
+	WebrequestURLHost                   = "WEBREQUEST_URL_HOST"
+	WebrequestURLPath                   = "WEBREQUEST_URL_PATH"
+	WebrequestURLPort                   = "WEBREQUEST_URL_PORT"
+	WebserviceEndpoint                  = "WEBSERVICE_ENDPOINT"
+	WebserviceMethod                    = "WEBSERVICE_METHOD"
+	ZOSCallType                         = "ZOS_CALL_TYPE"
+)
+
+const (
+	AmazonECRImageAccountId                  Attribute = "AMAZON_ECR_IMAGE_ACCOUNT_ID"
+	AmazonECRImageRegion                               = "AMAZON_ECR_IMAGE_REGION"
+	AmazonLambdaFunctionName                           = "AMAZON_LAMBDA_FUNCTION_NAME"
+	AmazonRegion                                       = "AMAZON_REGION"
+	ApacheConfigPath                                   = "APACHE_CONFIG_PATH"
+	ApacheSparkMasterIPAddress                         = "APACHE_SPARK_MASTER_IP_ADDRESS"
+	ASPDotNetCoreApplicationPath                       = "ASP_DOT_NET_CORE_APPLICATION_PATH"
+	AWSECSCluster                                      = "AWS_ECS_CLUSTER"
+	AWSECSContainerName                                = "AWS_ECS_CONTAINERNAME"
+	AWSECSFamily                                       = "AWS_ECS_FAMILY"
+	AWSECSRevision                                     = "AWS_ECS_REVISION"
+	CassandraClusterName                               = "CASSANDRA_CLUSTER_NAME"
+	CatalinaBase                                       = "CATALINA_BASE"
+	CatalinaHome                                       = "CATALINA_HOME"
+	CloudFoundryAppId                                  = "CLOUD_FOUNDRY_APP_ID"
+	CloudFoundryAppName                                = "CLOUD_FOUNDRY_APP_NAME"
+	CloudFoundryInstanceIndex                          = "CLOUD_FOUNDRY_INSTANCE_INDEX"
+	CloudFoundrySpaceId                                = "CLOUD_FOUNDRY_SPACE_ID"
+	CloudFoundrySpaceName                              = "CLOUD_FOUNDRY_SPACE_NAME"
+	ColdfusionJVMConfigFile                            = "COLDFUSION_JVM_CONFIG_FILE"
+	ColdfusionServiceName                              = "COLDFUSION_SERVICE_NAME"
+	CommandLineArgs                                    = "COMMAND_LINE_ARGS"
+	DotNetCommand                                      = "DOTNET_COMMAND"
+	DotNetCommandPath                                  = "DOTNET_COMMAND_PATH"
+	DynatraceClusterId                                 = "DYNATRACE_CLUSTER_ID"
+	DynatraceNodeId                                    = "DYNATRACE_NODE_ID"
+	ElasticsearchClustName                             = "ELASTICSEARCH_CLUSTER_NAME"
+	ElasticsearchNodeName                              = "ELASTICSEARCH_NODE_NAME"
+	EquinoxConfigPath                                  = "EQUINOX_CONFIG_PATH"
+	EXEName                                            = "EXE_NAME"
+	EXEPath                                            = "EXE_PATH"
+	GlassFishDomainName                                = "GLASS_FISH_DOMAIN_NAME"
+	GlassFishInstanceName                              = "GLASS_FISH_INSTANCE_NAME"
+	GoogleAppEngineInstance                            = "GOOGLE_APP_ENGINE_INSTANCE"
+	GoogleAppEngineService                             = "GOOGLE_APP_ENGINE_SERVICE"
+	GoogleCloudProject                                 = "GOOGLE_CLOUD_PROJECT"
+	HybrisBinDirectory                                 = "HYBRIS_BIN_DIRECTORY"
+	HybrisConfigDirectory                              = "HYBRIS_CONFIG_DIRECTORY"
+	HybrisDataDirectory                                = "HYBRIS_DATA_DIRECTORY"
+	IBMCICSRegion                                      = "IBM_CICS_REGION"
+	IBMCTGName                                         = "IBM_CTG_NAME"
+	IBMIMSConnectRegion                                = "IBM_IMS_CONNECT_REGION"
+	IBMIMSControlRegion                                = "IBM_IMS_CONTROL_REGION"
+	IBMIMSMessageProcessingRegion                      = "IBM_IMS_MESSAGE_PROCESSING_REGION"
+	IBMIMSSoapGWName                                   = "IBM_IMS_SOAP_GW_NAME"
+	IBMIntegrationNodeName                             = "IBM_INTEGRATION_NODE_NAME"
+	IBMIntegrationServerName                           = "IBM_INTEGRATION_SERVER_NAME"
+	IISAppPool                                         = "IIS_APP_POOL"
+	IISRoleName                                        = "IIS_ROLE_NAME"
+	JavaJarFile                                        = "JAVA_JAR_FILE"
+	JavaJarPath                                        = "JAVA_JAR_PATH"
+	JavaMainClass                                      = "JAVA_MAIN_CLASS"
+	JavaMainModule                                     = "JAVA_MAIN_MODULE"
+	JBossHome                                          = "JBOSS_HOME"
+	JBossMode                                          = "JBOSS_MODE"
+	JBossServerName                                    = "JBOSS_SERVER_NAME"
+	KubernetesBasePodName                              = "KUBERNETES_BASE_POD_NAME"
+	KubernetesContainerName                            = "KUBERNETES_CONTAINER_NAME"
+	KubernetesFullPodName                              = "KUBERNETES_FULL_POD_NAME"
+	KubernetesNamespace                                = "KUBERNETES_NAMESPACE"
+	KubernetesPodUId                                   = "KUBERNETES_POD_UID"
+	NodeJSAppBaseDirectory                             = "NODE_JS_APP_BASE_DIRECTORY"
+	NodeJSAppName                                      = "NODE_JS_APP_NAME"
+	NodeJSScriptName                                   = "NODE_JS_SCRIPT_NAME"
+	PHPScriptPath                                      = "PHP_SCRIPT_PATH"
+	PHPWorkingDirectory                                = "PHP_WORKING_DIRECTORY"
+	RubyAppRootPath                                    = "RUBY_APP_ROOT_PATH"
+	RubyScriptPath                                     = "RUBY_SCRIPT_PATH"
+	SoftwareAGInstallRoot                              = "SOFTWAREAG_INSTALL_ROOT"
+	SoftwareAGProductPropName                          = "SOFTWAREAG_PRODUCTPROPNAME"
+	TibcoBusinessWorksAppNodeName                      = "TIBCO_BUSINESS_WORKS_APP_NODE_NAME"
+	TibcoBusinessWorksAppSpaceName                     = "TIBCO_BUSINESS_WORKS_APP_SPACE_NAME"
+	TibcoBusinessWorksDomainName                       = "TIBCO_BUSINESS_WORKS_DOMAIN_NAME"
+	TibcoBusinessWorksEnginePropertyFile               = "TIBCO_BUSINESS_WORKS_ENGINE_PROPERTY_FILE"
+	TibcoBusinessWorksEnginePropertyFilePath           = "TIBCO_BUSINESS_WORKS_ENGINE_PROPERTY_FILE_PATH"
+	TibcoBusinessWorksHome                             = "TIBCO_BUSINESS_WORKS_HOME"
+	VarnishInstanceName                                = "VARNISH_INSTANCE_NAME"
+	WebLogicClusterName                                = "WEB_LOGIC_CLUSTER_NAME"
+	WebLogicDomainName                                 = "WEB_LOGIC_DOMAIN_NAME"
+	WebLogicHome                                       = "WEB_LOGIC_HOME"
+	WebLogicName                                       = "WEB_LOGIC_NAME"
+	WebSphereCellname                                  = "WEB_SPHERE_CELL_NAME"
+	WebSphereClusterName                               = "WEB_SPHERE_CLUSTER_NAME"
+	WebSphereNodeName                                  = "WEB_SPHERE_NODE_NAME"
+	WebSphereServerName                                = "WEB_SPHERE_SERVER_NAME"
+)
+
+type Source string
+
+const (
+	CloudFoundry Source = "CLOUD_FOUNDRY"
+	Environment         = "ENVIRONMENT"
+	GoogleCloud         = "GOOGLE_CLOUD"
+	Kubernetes          = "KUBERNETES"
+	Plugin              = "PLUGIN"
+)
+
+type DynamicKey struct {
+	Key    string `json:"key"`
+	Source Source `json:"source"`
+}
+
+type ConditionKey struct {
+	Attribute  Attribute  `json:"attribute"`
+	Type       string     `json:"type,omitempty"`
+	DynamicKey DynamicKey `json:"dynamicKey,omitempty"`
+}
+
+// Application Detection Rule
 type NameDetectionResponse struct {
 	Values []NameDetectionRule `json:"values"`
 }
@@ -338,14 +510,28 @@ func (e *ErrorResponse) Error() string {
 // Management zone types
 
 type ManagementZoneRule struct {
-	Type             RuleType          `json:"type"`
-	Enabled          bool              `json:"enabled"`
-	PropagationTypes []PropagationType `json:"propagationTypes"`
+	Type             RuleType                   `json:"type"`
+	Enabled          bool                       `json:"enabled"`
+	PropagationTypes []PropagationType          `json:"propagationTypes"`
+	Conditions       []ManagementZoneConditions `json:"conditions"`
+}
+
+type ManagementZoneConditions struct {
+	Key            ConditionKey                 `json:"key"`
+	ComparisonInfo ManagementZoneComparisonInfo `json:"comparisonInfo"`
 }
 
 type ManagementZoneMetadata struct {
 	ConfigurationVersions []int64 `json:"convigurationVersions"`
 	ClusterVersion        string  `json:"clusterVersion"`
+}
+
+type ManagementZoneComparisonInfo struct {
+	Type          string   `json:"type,omitempty"`
+	Operator      Operator `json:"operator"`
+	Negate        bool     `json:"negate"`
+	Value         string   `json:"value"`
+	CaseSensitive bool     `json:"caseSensitive,omitempty"`
 }
 
 type ManagementZoneType struct {
