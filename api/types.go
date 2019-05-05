@@ -108,10 +108,10 @@ type DashboardResponse struct {
 }
 
 type Dashboard struct {
-	ID                string                `json:"id,omitempty"`
-	Metadata          ConfigurationMetadata `json:"metadata,omitempty"`
-	DashboardMetadata DashboardMetadata     `json:"dashboardMetadata"`
-	Tiles             []Tile                `json:"tiles"`
+	ID                string                 `json:"id,omitempty"`
+	Metadata          *ConfigurationMetadata `json:"metadata,omitempty"`
+	DashboardMetadata *DashboardMetadata     `json:"dashboardMetadata,omitempty"`
+	Tiles             []Tile                 `json:"tiles"`
 }
 
 type DashboardStub struct {
@@ -121,16 +121,16 @@ type DashboardStub struct {
 }
 
 type ConfigurationMetadata struct {
-	ConfigurationVersions []int  `json:"configurationVersions"`
-	ClusterVersion        string `json:"clusterVersion"`
+	ConfigurationVersions []int  `json:"configurationVersions,omitempty"`
+	ClusterVersion        string `json:"clusterVersion,omitempty"`
 }
 
 type DashboardMetadata struct {
-	Name            string          `json:"name"`
-	Shared          bool            `json:"shared,omitempty"`
-	Owner           string          `json:"owner,omitempty"`
-	SharingDetails  SharingInfo     `json:"sharingDetails"`
-	DashboardFilter DashboardFilter `json:"dashboardFilter"`
+	Name            string           `json:"name"`
+	Shared          bool             `json:"shared,omitempty"`
+	Owner           string           `json:"owner,omitempty"`
+	SharingDetails  *SharingInfo     `json:"sharingDetails,omitempty"`
+	DashboardFilter *DashboardFilter `json:"dashboardFilter"`
 }
 
 type SharingInfo struct {
@@ -139,8 +139,8 @@ type SharingInfo struct {
 }
 
 type DashboardFilter struct {
-	Timeframe      string                    `json:"timeframe,omitempty"`
-	ManagementZone EntityShortRepresentation `json:"anagementZone,omitempty"`
+	Timeframe      string                     `json:"tismeframe,omitempty"`
+	ManagementZone *EntityShortRepresentation `json:"managementZone"`
 }
 
 type EntityShortRepresentation struct {
@@ -150,39 +150,39 @@ type EntityShortRepresentation struct {
 }
 
 type Tile struct {
-	Name       string     `json:"name"`
-	TileType   TileType   `json:"tileType"`
-	Configured bool       `json:"configured,omitempty"`
-	Bounds     TileBounds `json:"bounds"`
-	TileFilter TileFilter `json:"tileFilter"`
+	Name       string      `json:"name"`
+	TileType   TileType    `json:"tileType"`
+	Configured bool        `json:"configured,omitempty"`
+	Bounds     *TileBounds `json:"bounds"`
+	TileFilter *TileFilter `json:"tileFilter"`
 
 	// CustomChartingTile
-	CustomFilterConfig CustomFilterConfig `json:"filterConfig,omitempty"`
+	CustomFilterConfig *CustomFilterConfig `json:"filterConfig,omitempty"`
 }
 
 type CustomFilterConfig struct {
 	Type                 string                         `json:"type"`
 	CustomName           string                         `json:"customName"`
-	DefaultName          string                         `json:"defaultName"`
-	ChartConfig          CustomFilterChartConfig        `json:"chartConfig"`
-	FiltersPerEntityType map[string]map[string][]string `json:"filtersPerEntityType"`
+	DefaultName          string                         `json:"defaultName,omitempty"`
+	ChartConfig          *CustomFilterChartConfig       `json:"chartConfig"`
+	FiltersPerEntityType map[string]map[string][]string `json:"filtersPerEntityType,omitempty"`
 }
 
 type CustomFilterChartConfig struct {
-	Type           CustomFilterChartConfigType     `json:"type"`
-	Series         []CustomFilterChartSeriesConfig `json:"series"`
-	ResultMetadata string                          `json:"resulMetadata"`
+	Type           CustomFilterChartConfigType      `json:"type"`
+	Series         *[]CustomFilterChartSeriesConfig `json:"series"`
+	ResultMetadata string                           `json:"resulMetadata,omitempty"`
 }
 
 type CustomFilterChartSeriesConfig struct {
 	Metric        string                                   `json:"metric"`
 	Aggregation   CustomFilterChartSeriesConfigAggregation `json:"aggregation"`
-	Percentile    int                                      `json:"percentile,omitempty"`
+	Percentile    *int                                     `json:"percentile"`
 	Type          CustomFilterChartSeriesConfigType        `json:"type"`
 	EntityType    string                                   `json:"entityType"`
 	Dimensions    []CustomFilterChartSeriesDimensionConfig `json:"dimensions"`
-	SortAscending bool                                     `json:"sortAscending,omitempty"`
-	SortColumn    bool                                     `json:"sortColumn,omitempty"`
+	SortAscending bool                                     `json:"sortAscending"`
+	SortColumn    bool                                     `json:"sortColumn"`
 }
 
 type CustomFilterChartSeriesConfigAggregation string
@@ -277,14 +277,14 @@ const (
 )
 
 type TileBounds struct {
-	Top    int `json:"top,omitempty"`
-	Left   int `json:"left,omitempty"`
-	Width  int `json:"width,omitempty"`
-	Height int `json:"height,omitempty"`
+	Top    int `json:"top"`
+	Left   int `json:"left"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
 }
 
 type TileFilter struct {
-	ManagementZone EntityShortRepresentation `json:"managementZone"`
+	ManagementZone *EntityShortRepresentation `json:"managementZone"`
 }
 
 // Error Types
