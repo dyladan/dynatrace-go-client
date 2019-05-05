@@ -155,7 +155,79 @@ type Tile struct {
 	Configured bool       `json:"configured,omitempty"`
 	Bounds     TileBounds `json:"bounds"`
 	TileFilter TileFilter `json:"tileFilter"`
+
+	// CustomChartingTile
+	CustomFilterConfig CustomFilterConfig `json:"filterConfig,omitempty"`
 }
+
+type CustomFilterConfig struct {
+	Type                 string                         `json:"type"`
+	CustomName           string                         `json:"customName"`
+	DefaultName          string                         `json:"defaultName"`
+	ChartConfig          CustomFilterChartConfig        `json:"chartConfig"`
+	FiltersPerEntityType map[string]map[string][]string `json:"filtersPerEntityType"`
+}
+
+type CustomFilterChartConfig struct {
+	Type           CustomFilterChartConfigType     `json:"type"`
+	Series         []CustomFilterChartSeriesConfig `json:"series"`
+	ResultMetadata string                          `json:"resulMetadata"`
+}
+
+type CustomFilterChartSeriesConfig struct {
+	Metric        string                                   `json:"metric"`
+	Aggregation   CustomFilterChartSeriesConfigAggregation `json:"aggregation"`
+	Percentile    int                                      `json:"percentile,omitempty"`
+	Type          CustomFilterChartSeriesConfigType        `json:"type"`
+	EntityType    string                                   `json:"entityType"`
+	Dimensions    []CustomFilterChartSeriesDimensionConfig `json:"dimensions"`
+	SortAscending bool                                     `json:"sortAscending,omitempty"`
+	SortColumn    bool                                     `json:"sortColumn,omitempty"`
+}
+
+type CustomFilterChartSeriesConfigAggregation string
+
+const (
+	AVG               CustomFilterChartSeriesConfigAggregation = "AVG"
+	COUNT             CustomFilterChartSeriesConfigAggregation = "COUNT"
+	DISTINCT          CustomFilterChartSeriesConfigAggregation = "DISTINCT"
+	FASTEST10PERCENT  CustomFilterChartSeriesConfigAggregation = "FASTEST10PERCENT"
+	MAX               CustomFilterChartSeriesConfigAggregation = "MAX"
+	MEDIAN            CustomFilterChartSeriesConfigAggregation = "MEDIAN"
+	MIN               CustomFilterChartSeriesConfigAggregation = "MIN"
+	NONE              CustomFilterChartSeriesConfigAggregation = "NONE"
+	OF_INTEREST_RATIO CustomFilterChartSeriesConfigAggregation = "OF_INTEREST_RATIO"
+	OTHER_RATIO       CustomFilterChartSeriesConfigAggregation = "OTHER_RATIO"
+	PERCENTILE        CustomFilterChartSeriesConfigAggregation = "PERCENTILE"
+	PER_MIN           CustomFilterChartSeriesConfigAggregation = "PER_MIN"
+	SLOWEST10PERCENT  CustomFilterChartSeriesConfigAggregation = "SLOWEST10PERCENT"
+	SLOWEST5PERCENT   CustomFilterChartSeriesConfigAggregation = "SLOWEST5PERCENT"
+	SUM               CustomFilterChartSeriesConfigAggregation = "SUM"
+)
+
+type CustomFilterChartSeriesDimensionConfig struct {
+	ID               string   `json:"id"`
+	Values           []string `json:"values"`
+	UsedForSplitting bool     `json:"usedForSplitting,omitempty"`
+	EntityDimension  bool     `json:"entityDimension,omitempty"`
+}
+
+type CustomFilterChartSeriesConfigType string
+
+const (
+	AREA CustomFilterChartSeriesConfigType = "AREA"
+	BAR  CustomFilterChartSeriesConfigType = "BAR"
+	LINE CustomFilterChartSeriesConfigType = "LINE"
+)
+
+type CustomFilterChartConfigType string
+
+const (
+	PIE          CustomFilterChartConfigType = "PIE"
+	SINGLE_VALUE CustomFilterChartConfigType = "SINGLE_VALUE"
+	TIMESERIES   CustomFilterChartConfigType = "TIMESERIES"
+	TOP_LIST     CustomFilterChartConfigType = "TOP_LIST"
+)
 
 type TileType string
 
