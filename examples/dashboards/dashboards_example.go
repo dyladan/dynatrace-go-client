@@ -53,16 +53,10 @@ func createDashboard() {
 		{
 			Name:     "CPU Usage",
 			TileType: dynatrace.TileTypeCustomCharting,
-			Bounds: &dynatrace.TileBounds{
-				Height: 380,
-				Width:  380,
-				Top:    0,
-			},
-			Configured: true,
+			Bounds:   &dynatrace.TileBounds{},
 			CustomFilterConfig: &dynatrace.CustomFilterConfig{
-				CustomName:  "HOSTS - CPU Usage",
-				DefaultName: "Custom chart",
-				Type:        "MIXED",
+				CustomName: "HOSTS - CPU Usage",
+				Type:       "MIXED",
 				ChartConfig: &dynatrace.CustomFilterChartConfig{
 					Type: dynatrace.TIMESERIES,
 					Series: &[]dynatrace.CustomFilterChartSeriesConfig{
@@ -81,7 +75,6 @@ func createDashboard() {
 					},
 				},
 			},
-			TileFilter: &dynatrace.TileFilter{},
 		},
 	}
 
