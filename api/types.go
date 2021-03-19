@@ -102,6 +102,192 @@ const (
 	ConstraintViolationParameterLocationQuery       ConstraintViolationParameterLocation = "QUERY"
 )
 
+// Dashboard Types
+type DashboardResponse struct {
+	Dashboards []DashboardStub `json:"dashboards"`
+}
+
+type Dashboard struct {
+	ID                string                 `json:"id,omitempty"`
+	Metadata          *ConfigurationMetadata `json:"metadata,omitempty"`
+	DashboardMetadata *DashboardMetadata     `json:"dashboardMetadata,omitempty"`
+	Tiles             []Tile                 `json:"tiles"`
+}
+
+type DashboardStub struct {
+	ID    string `json:"id"`
+	Name  string `json:"name,omitempty"`
+	Owner string `json:"owner,omitempty"`
+}
+
+type ConfigurationMetadata struct {
+	ConfigurationVersions []int  `json:"configurationVersions,omitempty"`
+	ClusterVersion        string `json:"clusterVersion,omitempty"`
+}
+
+type DashboardMetadata struct {
+	Name            string           `json:"name"`
+	Shared          bool             `json:"shared,omitempty"`
+	Owner           string           `json:"owner,omitempty"`
+	SharingDetails  *SharingInfo     `json:"sharingDetails,omitempty"`
+	DashboardFilter *DashboardFilter `json:"dashboardFilter"`
+}
+
+type SharingInfo struct {
+	LinkShared bool `json:"linkShared,omitempty"`
+	Published  bool `json:"published,omitempty"`
+}
+
+type DashboardFilter struct {
+	Timeframe      string                     `json:"tismeframe,omitempty"`
+	ManagementZone *EntityShortRepresentation `json:"managementZone"`
+}
+
+type EntityShortRepresentation struct {
+	ID          string `json:"id"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+type Tile struct {
+	Name       string      `json:"name"`
+	TileType   TileType    `json:"tileType"`
+	Configured bool        `json:"configured,omitempty"`
+	Bounds     *TileBounds `json:"bounds"`
+	TileFilter *TileFilter `json:"tileFilter"`
+
+	// CustomChartingTile
+	CustomFilterConfig *CustomFilterConfig `json:"filterConfig,omitempty"`
+}
+
+type CustomFilterConfig struct {
+	Type                 string                         `json:"type"`
+	CustomName           string                         `json:"customName"`
+	DefaultName          string                         `json:"defaultName,omitempty"`
+	ChartConfig          *CustomFilterChartConfig       `json:"chartConfig"`
+	FiltersPerEntityType map[string]map[string][]string `json:"filtersPerEntityType,omitempty"`
+}
+
+type CustomFilterChartConfig struct {
+	Type           CustomFilterChartConfigType      `json:"type"`
+	Series         *[]CustomFilterChartSeriesConfig `json:"series"`
+	ResultMetadata string                           `json:"resulMetadata,omitempty"`
+}
+
+type CustomFilterChartSeriesConfig struct {
+	Metric        string                                   `json:"metric"`
+	Aggregation   CustomFilterChartSeriesConfigAggregation `json:"aggregation"`
+	Percentile    *int                                     `json:"percentile"`
+	Type          CustomFilterChartSeriesConfigType        `json:"type"`
+	EntityType    string                                   `json:"entityType"`
+	Dimensions    []CustomFilterChartSeriesDimensionConfig `json:"dimensions"`
+	SortAscending bool                                     `json:"sortAscending"`
+	SortColumn    bool                                     `json:"sortColumn"`
+}
+
+type CustomFilterChartSeriesConfigAggregation string
+
+const (
+	AVG               CustomFilterChartSeriesConfigAggregation = "AVG"
+	COUNT             CustomFilterChartSeriesConfigAggregation = "COUNT"
+	DISTINCT          CustomFilterChartSeriesConfigAggregation = "DISTINCT"
+	FASTEST10PERCENT  CustomFilterChartSeriesConfigAggregation = "FASTEST10PERCENT"
+	MAX               CustomFilterChartSeriesConfigAggregation = "MAX"
+	MEDIAN            CustomFilterChartSeriesConfigAggregation = "MEDIAN"
+	MIN               CustomFilterChartSeriesConfigAggregation = "MIN"
+	NONE              CustomFilterChartSeriesConfigAggregation = "NONE"
+	OF_INTEREST_RATIO CustomFilterChartSeriesConfigAggregation = "OF_INTEREST_RATIO"
+	OTHER_RATIO       CustomFilterChartSeriesConfigAggregation = "OTHER_RATIO"
+	PERCENTILE        CustomFilterChartSeriesConfigAggregation = "PERCENTILE"
+	PER_MIN           CustomFilterChartSeriesConfigAggregation = "PER_MIN"
+	SLOWEST10PERCENT  CustomFilterChartSeriesConfigAggregation = "SLOWEST10PERCENT"
+	SLOWEST5PERCENT   CustomFilterChartSeriesConfigAggregation = "SLOWEST5PERCENT"
+	SUM               CustomFilterChartSeriesConfigAggregation = "SUM"
+)
+
+type CustomFilterChartSeriesDimensionConfig struct {
+	ID               string   `json:"id"`
+	Values           []string `json:"values"`
+	UsedForSplitting bool     `json:"usedForSplitting,omitempty"`
+	EntityDimension  bool     `json:"entityDimension,omitempty"`
+}
+
+type CustomFilterChartSeriesConfigType string
+
+const (
+	AREA CustomFilterChartSeriesConfigType = "AREA"
+	BAR  CustomFilterChartSeriesConfigType = "BAR"
+	LINE CustomFilterChartSeriesConfigType = "LINE"
+)
+
+type CustomFilterChartConfigType string
+
+const (
+	PIE          CustomFilterChartConfigType = "PIE"
+	SINGLE_VALUE CustomFilterChartConfigType = "SINGLE_VALUE"
+	TIMESERIES   CustomFilterChartConfigType = "TIMESERIES"
+	TOP_LIST     CustomFilterChartConfigType = "TOP_LIST"
+)
+
+type TileType string
+
+const (
+	TileTypeApplication             TileType = "APPLICATION"
+	TileTypeApplications            TileType = "APPLICATIONS"
+	TileTypeApplicationsMostActive  TileType = "APPLICATIONS_MOST_ACTIVE"
+	TileTypeApplicationMethod       TileType = "APPLICATION_METHOD"
+	TileTypeApplicationWorldMap     TileType = "APPLICATION_WORLDMAP"
+	TileTypeAWS                     TileType = "AWS"
+	TileTypeBounceRate              TileType = "BOUNCE_RATE"
+	TileTypeCustomApplication       TileType = "CUSTOM_APPLICATION"
+	TileTypeCustomCharting          TileType = "CUSTOM_CHARTING"
+	TileTypeDatabase                TileType = "DATABASE"
+	TileTypeDAtabasesOverview       TileType = "DATABASES_OVERVIEW"
+	TileTypeDCRUMServices           TileType = "DCRUM_SERVICES"
+	TileTypeDocker                  TileType = "DOCKER"
+	TileTypeDTAQL                   TileType = "DTAQL"
+	TileTypeHeader                  TileType = "HEADER"
+	TileTypeHost                    TileType = "HOST"
+	TileTypeHosts                   TileType = "HOSTS"
+	TileTypeLogAnalytics            TileType = "LOG_ANALYTICS"
+	TileTypeMarkdown                TileType = "MARKDOWN"
+	TileTypeMobileApplication       TileType = "MOBILE_APPLICATION"
+	TileTypeNetwork                 TileType = "NETWORK"
+	TileTypeNetworkMedium           TileType = "NETWORK_MEDIUM"
+	TileTypeOpenProblems            TileType = "OPEN_PROBLEMS"
+	TileTypeProcessGroupsOne        TileType = "PROCESS_GROUPS_ONE"
+	TileTypePureModel               TileType = "PURE_MODEL"
+	TileTypeResources               TileType = "RESOURCES"
+	TileTypeServices                TileType = "SERVICES"
+	TileTypeServiceVersatile        TileType = "SERVICE_VERSATILE"
+	TileTypeSessionMetrics          TileType = "SESSION_METRICS"
+	TileTypeSyntheticHTTPMonitor    TileType = "SYNTHETIC_HTTP_MONITOR"
+	TileTypeSyntheticSingleExitTest TileType = "SYNTHETIC_SINGLE_EXT_TEST"
+	TileTypeSyntheticSingleWebcheck TileType = "SYNTHETIC_SINGLE_WEBCHECK"
+	TileTypeSyntheticTests          TileType = "SYNTHETIC_TESTS"
+	TileTypeTechnologyLandscape     TileType = "TECHNOLOGY_LANDSCAPE"
+	TileTypeThirdPartyMostActive    TileType = "THIRD_PARTY_MOST_ACTIVE"
+	TileTypeUEMActiveSessions       TileType = "UEM_ACTIVE_SESSIONS"
+	TileTypeUEMConversionsOverall   TileType = "UEM_CONVERSIONS_OVERALL"
+	TileTypeUEMConversionsPerGoal   TileType = "UEM_CONVERSIONS_PER_GOAL"
+	TileTypeUEMJSErrorsOverall      TileType = "UEM_JSERRORS_OVERALL"
+	TileTypeUEMKeyUserActions       TileType = "UEM_KEY_USER_ACTIONS"
+	TileTypeUsers                   TileType = "USERS"
+	TileTypeVirtualization          TileType = "VIRTUALIZATION"
+)
+
+type TileBounds struct {
+	Top    int `json:"top"`
+	Left   int `json:"left"`
+	Width  int `json:"width"`
+	Height int `json:"height"`
+}
+
+type TileFilter struct {
+	ManagementZone *EntityShortRepresentation `json:"managementZone"`
+}
+
+// Error Types
 type ErrorResponse struct {
 	Detail *ErrorDetail `json:"error,omitempty"`
 }
@@ -117,4 +303,55 @@ func (e *ErrorResponse) Error() string {
 		return e.Detail.Message
 	}
 	return "Unknown error"
+}
+
+type EventType string
+
+const (
+	EventTypeAvailabilityEvent    = "AVAILABILITY_EVENT"
+	EventTypeCustomAlert          = "CUSTOM_ALERT"
+	EventTypeCustomAnnotation     = "CUSTOM_ANNOTATION"
+	EventTypeCustomConfiguration  = "CUSTOM_CONFIGURATION"
+	EventTypeCustomDeployment     = "CUSTOM_DEPLOYMENT"
+	EventTypeCustomInfo           = "CUSTOM_INFO"
+	EventTypeErrorEvent           = "ERROR_EVENT"
+	EventTypeMarkedForTermination = "MARKED_FOR_TERMINATION"
+	EventTypePerformanceEvent     = "PERFORMANCE_EVENT"
+	EventTypeResourceContention   = "RESOURCE_CONTENTION"
+)
+
+type EventCreation struct {
+	EventType             EventType            `json:"eventType,omitempty"`
+	Start                 int64                `json:"start,omitempty"`
+	End                   int64                `json:"end,omitempty"`
+	TimeoutMinutes        int32                `json:"timeoutMinutes,omitempty"`
+	Source                string               `json:"source,omitempty"`
+	AnnotationType        string               `json:"annotationType,omitempty"`
+	AnnotationDescription string               `json:"annotationDescription,omitempty"`
+	AttachRules           PushEventAttachRules `json:"attachRules,omitempty"`
+	Description           string               `json:"description,omitempty"`
+	Title                 string               `json:"title,omitempty"`
+	CustomProperties      map[string]string    `json:"customProperties,omitempty"`
+	AllowDavisMerge       bool                 `json:"allowDavisMerge,omitempty"`
+}
+
+type PushEventAttachRules struct {
+	EntityIds     []string       `json:"entityIds,omitempty"`
+	TagMatchRules []TagMatchRule `json:"tagRule,omitempty"`
+}
+
+type TagMatchRule struct {
+	MeTypes []string  `json:"meTypes,omitempty"`
+	Tags    []TagInfo `json:"tags,omitempty"`
+}
+
+type TagInfo struct {
+	Context string `json:"context,omitempty"`
+	Key     string `json:"key,omitempty"`
+}
+
+type EventStoreResult struct {
+	StoredEventIds       []int    `json:"storedEventIds,omitempty"`
+	StoredIds            []string `json:"storedIds,omitempty"`
+	StoredCorrelationIds []string `json:"storedCorrelationIds,omitempty"`
 }

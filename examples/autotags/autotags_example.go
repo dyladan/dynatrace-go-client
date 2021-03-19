@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	dynatrace "github.com/dyladan/dynatrace-go-client/api"
 	"os"
@@ -17,7 +18,7 @@ func createNewAutoTag() {
 
 	condition := dynatrace.AutoTagRuleCondition{
 		Key: dynatrace.AutoTagRuleConditionKey{
-			Attribute: "CUSTOM_DEVICE_NAME",
+			Attribute: "HOST_NAME",
 		},
 
 		ComparisonInfo: dynatrace.AutoTagRuleConditionComparisonInfo{
@@ -33,7 +34,7 @@ func createNewAutoTag() {
 		{
 			Type:        dynatrace.AutoTagRuleTypeCustomDevice,
 			Enabled:     true,
-			ValueFormat: "Test {CustomDevice:DetectedName}",
+			ValueFormat: "Test David",
 			Conditions:  []dynatrace.AutoTagRuleCondition{condition},
 		},
 	}
@@ -43,6 +44,9 @@ func createNewAutoTag() {
 		Name:        "autotag_test",
 		Rules:       rules,
 	}
+
+	enc := json.NewEncoder(os.Stdout)
+	enc.Encode(newAutoTag)
 
 	autoTag, resp, _ := c.AutoTags.Create(newAutoTag)
 	fmt.Println("API Response", resp)
@@ -117,10 +121,10 @@ func validateCreate() {
 
 func main() {
 	createNewAutoTag()
-	getAutoTagDetails()
-	validateCreate()
-	validadeUpdate()
-	updateAutoTag()
-	deleteAutoTag()
+	// getAutoTagDetails()
+	// validateCreate()
+	// validadeUpdate()
+	// updateAutoTag()
+	// deleteAutoTag()
 
 }

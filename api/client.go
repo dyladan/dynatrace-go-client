@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-
+	log "github.com/sirupsen/logrus"
 	resty "gopkg.in/resty.v1"
 )
 
@@ -13,15 +13,20 @@ type service struct {
 type Client struct {
 	common service
 
-	AutoTags *autoTagsService
+	AutoTags   *autoTagsService
+	Dashboards *dashboardService
+	Events     *eventsService
 
 	RestyClient *resty.Client
+
+	Log *log.Logger
 }
 
 type Config struct {
 	APIKey  string
 	BaseURL string
 	Debug   bool
+	Log     *log.Logger
 }
 
 // New returns a new Client for the specified apiKey.
@@ -40,12 +45,19 @@ func New(config Config) Client {
 		r.SetDebug(true)
 	}
 
+	if config.Log == nil {
+		config.Log = log.New()
+	}
+
 	c := Client{
 		RestyClient: r,
+		Log:         config.Log,
 	}
 
 	c.common.client = &c
 	c.AutoTags = (*autoTagsService)(&c.common)
+	c.Dashboards = (*dashboardService)(&c.common)
+	c.Events = (*eventsService)(&c.common)
 
 	return c
 }
@@ -63,7 +75,9 @@ func (c *Client) Do(method string, path string, body interface{}, response inter
 		r = r.SetResult(response)
 	}
 
+	c.Log.WithFields(log.Fields{"path": path, "method": method, "body": fmt.Sprintf("%+v", body)}).Debug("Making HTTP Request")
 	apiResponse, err := r.Execute(method, path)
+	c.Log.WithFields(log.Fields{"path": path, "method": method, "apiResponse": fmt.Sprintf("%+v", apiResponse)}).Debug("Received HTTP Response")
 
 	return apiResponse, err
 }
