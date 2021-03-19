@@ -304,3 +304,54 @@ func (e *ErrorResponse) Error() string {
 	}
 	return "Unknown error"
 }
+
+type EventType string
+
+const (
+	EventTypeAvailabilityEvent    = "AVAILABILITY_EVENT"
+	EventTypeCustomAlert          = "CUSTOM_ALERT"
+	EventTypeCustomAnnotation     = "CUSTOM_ANNOTATION"
+	EventTypeCustomConfiguration  = "CUSTOM_CONFIGURATION"
+	EventTypeCustomDeployment     = "CUSTOM_DEPLOYMENT"
+	EventTypeCustomInfo           = "CUSTOM_INFO"
+	EventTypeErrorEvent           = "ERROR_EVENT"
+	EventTypeMarkedForTermination = "MARKED_FOR_TERMINATION"
+	EventTypePerformanceEvent     = "PERFORMANCE_EVENT"
+	EventTypeResourceContention   = "RESOURCE_CONTENTION"
+)
+
+type EventCreation struct {
+	EventType             EventType            `json:"eventType,omitempty"`
+	Start                 int64                `json:"start,omitempty"`
+	End                   int64                `json:"end,omitempty"`
+	TimeoutMinutes        int32                `json:"timeoutMinutes,omitempty"`
+	Source                string               `json:"source,omitempty"`
+	AnnotationType        string               `json:"annotationType,omitempty"`
+	AnnotationDescription string               `json:"annotationDescription,omitempty"`
+	AttachRules           PushEventAttachRules `json:"attachRules,omitempty"`
+	Description           string               `json:"description,omitempty"`
+	Title                 string               `json:"title,omitempty"`
+	CustomProperties      map[string]string    `json:"customProperties,omitempty"`
+	AllowDavisMerge       bool                 `json:"allowDavisMerge,omitempty"`
+}
+
+type PushEventAttachRules struct {
+	EntityIds     []string       `json:"entityIds,omitempty"`
+	TagMatchRules []TagMatchRule `json:"tagRule,omitempty"`
+}
+
+type TagMatchRule struct {
+	MeTypes []string  `json:"meTypes,omitempty"`
+	Tags    []TagInfo `json:"tags,omitempty"`
+}
+
+type TagInfo struct {
+	Context string `json:"context,omitempty"`
+	Key     string `json:"key,omitempty"`
+}
+
+type EventStoreResult struct {
+	StoredEventIds       []int    `json:"storedEventIds,omitempty"`
+	StoredIds            []string `json:"storedIds,omitempty"`
+	StoredCorrelationIds []string `json:"storedCorrelationIds,omitempty"`
+}
