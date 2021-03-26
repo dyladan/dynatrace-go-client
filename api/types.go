@@ -355,3 +355,21 @@ type EventStoreResult struct {
 	StoredIds            []string `json:"storedIds,omitempty"`
 	StoredCorrelationIds []string `json:"storedCorrelationIds,omitempty"`
 }
+
+type CustomDevicePushMessage struct {
+	DisplayName string            `json:"displayName,omitempty"`
+	Group       string            `json:"group,omitempty"`
+	IPAddresses []string          `json:"ipAddresses,omitempty"`
+	ListenPorts []int             `json:"listenPorts,omitempty"`
+	Favicon     string            `json:"favicon,omitempty"`
+	ConfigURL   string            `json:"configUrl,omitempty"`
+	Type        string            `json:"type,omitempty"`
+	Properties  map[string]string `json:"properties,omitempty"`
+	Tags        []string          `json:"tags,omitempty"`
+	HostNames   []string          `json:"hostNames,omitempty"`
+}
+
+type CustomDevicePushResult struct {
+	EntityID string `json:"entityId"`
+	GroupID  string `json:"groupId"`
+}

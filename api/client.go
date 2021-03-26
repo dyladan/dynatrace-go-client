@@ -4,6 +4,7 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	resty "gopkg.in/resty.v1"
+	"time"
 )
 
 type service struct {
@@ -13,9 +14,10 @@ type service struct {
 type Client struct {
 	common service
 
-	AutoTags   *autoTagsService
-	Dashboards *dashboardService
-	Events     *eventsService
+	AutoTags     *autoTagsService
+	Dashboards   *dashboardService
+	Events       *eventsService
+	CustomDevice *customDeviceService
 
 	RestyClient *resty.Client
 
@@ -23,10 +25,12 @@ type Client struct {
 }
 
 type Config struct {
-	APIKey  string
-	BaseURL string
-	Debug   bool
-	Log     *log.Logger
+	APIKey    string
+	BaseURL   string
+	Debug     bool
+	Retries   int
+	RetryTime time.Duration
+	Log       *log.Logger
 }
 
 // New returns a new Client for the specified apiKey.
@@ -46,8 +50,15 @@ func New(config Config) Client {
 	}
 
 	if config.Log == nil {
-		config.Log = log.New()
+		config.Log = log.StandardLogger()
 	}
+
+	r.RetryCount = 1
+	if config.Retries != 0 {
+		r.RetryCount = config.Retries
+	}
+
+	r.RetryWaitTime = config.RetryTime
 
 	c := Client{
 		RestyClient: r,
@@ -58,6 +69,7 @@ func New(config Config) Client {
 	c.AutoTags = (*autoTagsService)(&c.common)
 	c.Dashboards = (*dashboardService)(&c.common)
 	c.Events = (*eventsService)(&c.common)
+	c.CustomDevice = (*customDeviceService)(&c.common)
 
 	return c
 }
