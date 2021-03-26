@@ -332,7 +332,7 @@ type EventCreation struct {
 	Description           string               `json:"description,omitempty"`
 	Title                 string               `json:"title,omitempty"`
 	CustomProperties      map[string]string    `json:"customProperties,omitempty"`
-	AllowDavisMerge       bool                 `json:"allowDavisMerge,omitempty"`
+	AllowDavisMerge       bool                 `json:"allowDavisMerge"`
 }
 
 type PushEventAttachRules struct {
@@ -354,4 +354,154 @@ type EventStoreResult struct {
 	StoredEventIds       []int    `json:"storedEventIds,omitempty"`
 	StoredIds            []string `json:"storedIds,omitempty"`
 	StoredCorrelationIds []string `json:"storedCorrelationIds,omitempty"`
+}
+
+type CustomDevicePushMessage struct {
+	DisplayName string            `json:"displayName,omitempty"`
+	Group       string            `json:"group,omitempty"`
+	IPAddresses []string          `json:"ipAddresses,omitempty"`
+	ListenPorts []int             `json:"listenPorts,omitempty"`
+	Favicon     string            `json:"favicon,omitempty"`
+	ConfigURL   string            `json:"configUrl,omitempty"`
+	Type        string            `json:"type,omitempty"`
+	Properties  map[string]string `json:"properties,omitempty"`
+	Tags        []string          `json:"tags,omitempty"`
+	HostNames   []string          `json:"hostNames,omitempty"`
+}
+
+type CustomDevicePushResult struct {
+	EntityID string `json:"entityId"`
+	GroupID  string `json:"groupId"`
+}
+
+type ProblemsResponse struct {
+	TotalCount int       `json:"totalCount"`
+	PageSize   int       `json:"pageSize"`
+	Problems   []Problem `json:"problems"`
+}
+type EntityID struct {
+	ID   string `json:"id"`
+	Type string `json:"type"`
+}
+type AffectedEntities struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type ImpactedEntities struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type ProblemFilters struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+type Entity struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type GroupingEntity struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type Details struct {
+	EvidenceType      string         `json:"evidenceType"`
+	DisplayName       string         `json:"displayName"`
+	Entity            Entity         `json:"entity"`
+	GroupingEntity    GroupingEntity `json:"groupingEntity"`
+	RootCauseRelevant bool           `json:"rootCauseRelevant"`
+	EventID           string         `json:"eventId"`
+	EventType         string         `json:"eventType"`
+	StartTime         int64          `json:"startTime"`
+}
+type EvidenceDetails struct {
+	TotalCount int       `json:"totalCount"`
+	Details    []Details `json:"details"`
+}
+
+type Problem struct {
+	ProblemID        string             `json:"problemId"`
+	DisplayID        string             `json:"displayId"`
+	Title            string             `json:"title"`
+	ImpactLevel      string             `json:"impactLevel"`
+	SeverityLevel    string             `json:"severityLevel"`
+	Status           string             `json:"status"`
+	AffectedEntities []AffectedEntities `json:"affectedEntities"`
+	ImpactedEntities []ImpactedEntities `json:"impactedEntities"`
+	RootCauseEntity  interface{}        `json:"rootCauseEntity"`
+	ManagementZones  []interface{}      `json:"managementZones"`
+	EntityTags       []interface{}      `json:"entityTags"`
+	ProblemFilters   []ProblemFilters   `json:"problemFilters"`
+	StartTime        int64              `json:"startTime"`
+	EndTime          int                `json:"endTime"`
+	EvidenceDetails  EvidenceDetails    `json:"evidenceDetails"`
+}
+
+type ProblemClose struct {
+	Message string `json:"message"`
+}
+
+type ProblemV1Result struct {
+	Result Result `json:"result"`
+}
+
+type RankedEvents struct {
+	StartTime             int64             `json:"startTime"`
+	EndTime               int               `json:"endTime"`
+	EntityID              string            `json:"entityId"`
+	EntityName            string            `json:"entityName"`
+	SeverityLevel         string            `json:"severityLevel"`
+	ImpactLevel           string            `json:"impactLevel"`
+	EventType             string            `json:"eventType"`
+	Status                string            `json:"status"`
+	Severities            []interface{}     `json:"severities"`
+	IsRootCause           bool              `json:"isRootCause"`
+	CustomProperties      map[string]string `json:"customProperties"`
+	Source                string            `json:"source"`
+	AnnotationDescription string            `json:"annotationDescription"`
+	CorrelationID         string            `json:"correlationId"`
+}
+type RankedImpacts struct {
+	EntityID      string `json:"entityId"`
+	EntityName    string `json:"entityName"`
+	SeverityLevel string `json:"severityLevel"`
+	ImpactLevel   string `json:"impactLevel"`
+	EventType     string `json:"eventType"`
+}
+type AffectedCounts struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type RecoveredCounts struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type ProblemV1 struct {
+	ID                     string          `json:"id"`
+	StartTime              int64           `json:"startTime"`
+	EndTime                int             `json:"endTime"`
+	DisplayName            string          `json:"displayName"`
+	ImpactLevel            string          `json:"impactLevel"`
+	Status                 string          `json:"status"`
+	SeverityLevel          string          `json:"severityLevel"`
+	CommentCount           int             `json:"commentCount"`
+	TagsOfAffectedEntities []interface{}   `json:"tagsOfAffectedEntities"`
+	RankedEvents           []RankedEvents  `json:"rankedEvents"`
+	RankedImpacts          []RankedImpacts `json:"rankedImpacts"`
+	AffectedCounts         AffectedCounts  `json:"affectedCounts"`
+	RecoveredCounts        RecoveredCounts `json:"recoveredCounts"`
+	HasRootCause           bool            `json:"hasRootCause"`
+}
+type Monitored struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type Result struct {
+	Problems  []ProblemV1 `json:"problems"`
+	Monitored Monitored   `json:"monitored"`
 }

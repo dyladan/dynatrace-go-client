@@ -1,9 +1,13 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
+	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
-	resty "gopkg.in/resty.v1"
+	"net/http"
+	"strings"
+	"time"
 )
 
 type service struct {
@@ -13,9 +17,11 @@ type service struct {
 type Client struct {
 	common service
 
-	AutoTags   *autoTagsService
-	Dashboards *dashboardService
-	Events     *eventsService
+	AutoTags     *autoTagsService
+	Dashboards   *dashboardService
+	Events       *eventsService
+	CustomDevice *customDeviceService
+	Problem      *problemService
 
 	RestyClient *resty.Client
 
@@ -23,19 +29,27 @@ type Client struct {
 }
 
 type Config struct {
-	APIKey  string
-	BaseURL string
-	Debug   bool
-	Log     *log.Logger
+	APIKey    string
+	BaseURL   string
+	Debug     bool
+	Retries   int
+	RetryTime time.Duration
+	Log       *log.Logger
 }
 
 // New returns a new Client for the specified apiKey.
 func New(config Config) Client {
 	r := resty.New()
+	r.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	r.SetTimeout(30 * time.Second)
+	//r.SetRedirectPolicy(resty.FlexibleRedirectPolicy(15))
 
 	baseURL := config.BaseURL
 	if baseURL == "" {
 		panic("Base URL required")
+	}
+	if !strings.HasSuffix(baseURL, "/") {
+		baseURL = fmt.Sprintf("%s/", baseURL)
 	}
 
 	r.SetHeader("Authorization", fmt.Sprintf("Api-Token %s", config.APIKey))
@@ -46,8 +60,24 @@ func New(config Config) Client {
 	}
 
 	if config.Log == nil {
-		config.Log = log.New()
+		config.Log = log.StandardLogger()
 	}
+
+	r.RetryCount = 1
+	if config.Retries != 0 {
+		r.RetryCount = config.Retries
+	}
+
+	if config.RetryTime == 0*time.Millisecond {
+		config.RetryTime = 100 * time.Millisecond
+	}
+	r.RetryWaitTime = config.RetryTime
+
+	r.AddRetryCondition(
+		func(r *resty.Response, e error) bool {
+			return r.StatusCode() >= http.StatusBadRequest
+		},
+	)
 
 	c := Client{
 		RestyClient: r,
@@ -58,6 +88,8 @@ func New(config Config) Client {
 	c.AutoTags = (*autoTagsService)(&c.common)
 	c.Dashboards = (*dashboardService)(&c.common)
 	c.Events = (*eventsService)(&c.common)
+	c.CustomDevice = (*customDeviceService)(&c.common)
+	c.Problem = (*problemService)(&c.common)
 
 	return c
 }

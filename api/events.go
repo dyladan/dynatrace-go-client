@@ -1,7 +1,7 @@
 package api
 
 import (
-	"gopkg.in/resty.v1"
+	"github.com/go-resty/resty/v2"
 )
 
 type eventsService service
