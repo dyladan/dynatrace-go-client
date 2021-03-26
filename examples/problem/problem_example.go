@@ -38,11 +38,39 @@ func listProblems() {
 		for _, evidenceDetails := range problem.EvidenceDetails.Details {
 			fmt.Println(evidenceDetails.DisplayName)
 		}
+		r, err := c.Problem.Close(problem.ProblemID, "Closing this from Go! No more problems for me!")
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(r.String())
+	}
+
+}
+
+func listProblemsV1() {
+
+	l := log.New()
+	l.Level = log.DebugLevel
+
+	c := dynatrace.New(dynatrace.Config{
+		APIKey:  os.Getenv("DT_API_KEY"),
+		BaseURL: os.Getenv("DT_BASE_URL"),
+		Log:     l,
+	})
+
+	problems, _, err := c.Problem.ListV1("", 0, 0, "", "", "", nil, true)
+	if err != nil {
+		panic(err)
+	}
+	for _, problem := range problems {
+		for _, event := range problem.RankedEvents {
+			fmt.Println(event.CorrelationID)
+		}
 	}
 
 }
 
 func main() {
-	listProblems()
+	listProblemsV1()
 
 }

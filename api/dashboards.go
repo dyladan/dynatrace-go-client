@@ -2,7 +2,7 @@ package api
 
 import (
 	"fmt"
-	"gopkg.in/resty.v1"
+	"github.com/go-resty/resty/v2"
 )
 
 type dashboardService service

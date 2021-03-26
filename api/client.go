@@ -1,9 +1,12 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
+	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
-	resty "gopkg.in/resty.v1"
+	"net/http"
+	"strings"
 	"time"
 )
 
@@ -37,10 +40,16 @@ type Config struct {
 // New returns a new Client for the specified apiKey.
 func New(config Config) Client {
 	r := resty.New()
+	r.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
+	r.SetTimeout(30 * time.Second)
+	//r.SetRedirectPolicy(resty.FlexibleRedirectPolicy(15))
 
 	baseURL := config.BaseURL
 	if baseURL == "" {
 		panic("Base URL required")
+	}
+	if !strings.HasSuffix(baseURL, "/") {
+		baseURL = fmt.Sprintf("%s/", baseURL)
 	}
 
 	r.SetHeader("Authorization", fmt.Sprintf("Api-Token %s", config.APIKey))
@@ -59,7 +68,16 @@ func New(config Config) Client {
 		r.RetryCount = config.Retries
 	}
 
+	if config.RetryTime == 0*time.Millisecond {
+		config.RetryTime = 100 * time.Millisecond
+	}
 	r.RetryWaitTime = config.RetryTime
+
+	r.AddRetryCondition(
+		func(r *resty.Response, e error) bool {
+			return r.StatusCode() >= http.StatusBadRequest
+		},
+	)
 
 	c := Client{
 		RestyClient: r,

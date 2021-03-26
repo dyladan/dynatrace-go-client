@@ -6,6 +6,7 @@ import (
 	dynatrace "github.com/dyladan/dynatrace-go-client/api"
 	log "github.com/sirupsen/logrus"
 	"os"
+	"time"
 )
 
 func prettyPrint(i interface{}) string {
@@ -22,9 +23,11 @@ func createEvent() {
 	l.Level = log.DebugLevel
 
 	c := dynatrace.New(dynatrace.Config{
-		APIKey:  os.Getenv("DT_API_KEY"),
-		BaseURL: os.Getenv("DT_BASE_URL"),
-		Log:     l,
+		APIKey:    os.Getenv("DT_API_TOKEN"),
+		BaseURL:   os.Getenv("DT_API_URL"),
+		Log:       l,
+		RetryTime: 2 * time.Second,
+		Retries:   5,
 	})
 
 	cd := dynatrace.CustomDevicePushMessage{

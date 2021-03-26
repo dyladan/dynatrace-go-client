@@ -332,7 +332,7 @@ type EventCreation struct {
 	Description           string               `json:"description,omitempty"`
 	Title                 string               `json:"title,omitempty"`
 	CustomProperties      map[string]string    `json:"customProperties,omitempty"`
-	AllowDavisMerge       bool                 `json:"allowDavisMerge,omitempty"`
+	AllowDavisMerge       bool                 `json:"allowDavisMerge"`
 }
 
 type PushEventAttachRules struct {
@@ -434,4 +434,74 @@ type Problem struct {
 	StartTime        int64              `json:"startTime"`
 	EndTime          int                `json:"endTime"`
 	EvidenceDetails  EvidenceDetails    `json:"evidenceDetails"`
+}
+
+type ProblemClose struct {
+	Message string `json:"message"`
+}
+
+type ProblemV1Result struct {
+	Result Result `json:"result"`
+}
+
+type RankedEvents struct {
+	StartTime             int64             `json:"startTime"`
+	EndTime               int               `json:"endTime"`
+	EntityID              string            `json:"entityId"`
+	EntityName            string            `json:"entityName"`
+	SeverityLevel         string            `json:"severityLevel"`
+	ImpactLevel           string            `json:"impactLevel"`
+	EventType             string            `json:"eventType"`
+	Status                string            `json:"status"`
+	Severities            []interface{}     `json:"severities"`
+	IsRootCause           bool              `json:"isRootCause"`
+	CustomProperties      map[string]string `json:"customProperties"`
+	Source                string            `json:"source"`
+	AnnotationDescription string            `json:"annotationDescription"`
+	CorrelationID         string            `json:"correlationId"`
+}
+type RankedImpacts struct {
+	EntityID      string `json:"entityId"`
+	EntityName    string `json:"entityName"`
+	SeverityLevel string `json:"severityLevel"`
+	ImpactLevel   string `json:"impactLevel"`
+	EventType     string `json:"eventType"`
+}
+type AffectedCounts struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type RecoveredCounts struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type ProblemV1 struct {
+	ID                     string          `json:"id"`
+	StartTime              int64           `json:"startTime"`
+	EndTime                int             `json:"endTime"`
+	DisplayName            string          `json:"displayName"`
+	ImpactLevel            string          `json:"impactLevel"`
+	Status                 string          `json:"status"`
+	SeverityLevel          string          `json:"severityLevel"`
+	CommentCount           int             `json:"commentCount"`
+	TagsOfAffectedEntities []interface{}   `json:"tagsOfAffectedEntities"`
+	RankedEvents           []RankedEvents  `json:"rankedEvents"`
+	RankedImpacts          []RankedImpacts `json:"rankedImpacts"`
+	AffectedCounts         AffectedCounts  `json:"affectedCounts"`
+	RecoveredCounts        RecoveredCounts `json:"recoveredCounts"`
+	HasRootCause           bool            `json:"hasRootCause"`
+}
+type Monitored struct {
+	INFRASTRUCTURE int `json:"INFRASTRUCTURE"`
+	SERVICE        int `json:"SERVICE"`
+	APPLICATION    int `json:"APPLICATION"`
+	ENVIRONMENT    int `json:"ENVIRONMENT"`
+}
+type Result struct {
+	Problems  []ProblemV1 `json:"problems"`
+	Monitored Monitored   `json:"monitored"`
 }
