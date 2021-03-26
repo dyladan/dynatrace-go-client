@@ -373,3 +373,65 @@ type CustomDevicePushResult struct {
 	EntityID string `json:"entityId"`
 	GroupID  string `json:"groupId"`
 }
+
+type ProblemsResponse struct {
+	TotalCount int       `json:"totalCount"`
+	PageSize   int       `json:"pageSize"`
+	Problems   []Problem `json:"problems"`
+}
+type EntityID struct {
+	ID   string `json:"id"`
+	Type string `json:"type"`
+}
+type AffectedEntities struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type ImpactedEntities struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type ProblemFilters struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+type Entity struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type GroupingEntity struct {
+	EntityID EntityID `json:"entityId"`
+	Name     string   `json:"name"`
+}
+type Details struct {
+	EvidenceType      string         `json:"evidenceType"`
+	DisplayName       string         `json:"displayName"`
+	Entity            Entity         `json:"entity"`
+	GroupingEntity    GroupingEntity `json:"groupingEntity"`
+	RootCauseRelevant bool           `json:"rootCauseRelevant"`
+	EventID           string         `json:"eventId"`
+	EventType         string         `json:"eventType"`
+	StartTime         int64          `json:"startTime"`
+}
+type EvidenceDetails struct {
+	TotalCount int       `json:"totalCount"`
+	Details    []Details `json:"details"`
+}
+
+type Problem struct {
+	ProblemID        string             `json:"problemId"`
+	DisplayID        string             `json:"displayId"`
+	Title            string             `json:"title"`
+	ImpactLevel      string             `json:"impactLevel"`
+	SeverityLevel    string             `json:"severityLevel"`
+	Status           string             `json:"status"`
+	AffectedEntities []AffectedEntities `json:"affectedEntities"`
+	ImpactedEntities []ImpactedEntities `json:"impactedEntities"`
+	RootCauseEntity  interface{}        `json:"rootCauseEntity"`
+	ManagementZones  []interface{}      `json:"managementZones"`
+	EntityTags       []interface{}      `json:"entityTags"`
+	ProblemFilters   []ProblemFilters   `json:"problemFilters"`
+	StartTime        int64              `json:"startTime"`
+	EndTime          int                `json:"endTime"`
+	EvidenceDetails  EvidenceDetails    `json:"evidenceDetails"`
+}

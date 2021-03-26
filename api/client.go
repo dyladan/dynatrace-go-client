@@ -18,6 +18,7 @@ type Client struct {
 	Dashboards   *dashboardService
 	Events       *eventsService
 	CustomDevice *customDeviceService
+	Problem      *problemService
 
 	RestyClient *resty.Client
 
@@ -70,6 +71,7 @@ func New(config Config) Client {
 	c.Dashboards = (*dashboardService)(&c.common)
 	c.Events = (*eventsService)(&c.common)
 	c.CustomDevice = (*customDeviceService)(&c.common)
+	c.Problem = (*problemService)(&c.common)
 
 	return c
 }
